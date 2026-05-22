@@ -3,20 +3,32 @@
 Character::Character()
 {
 	Name = "Missingno";
-	HP = 10;
+	MaxHP = 10;
 }
 Character::Character(std::string n, int hp)
 {
 	Name = n;
-	HP = hp;
+	MaxHP = hp;
 }
 std::string Character::Return_Name()
 {
 	return Name;
 }
-int Character::Return_HP()
+int Character::Return_MaxHP()
 {
-	return HP;
+	return MaxHP;
+}
+int Character::Return_CurrentHP()
+{
+	return CurrentHp;
+}
+void Character::Set_MaxHP(int hp)
+{
+	MaxHP = hp;
+}
+void Character::Set_CurrentHP(int hp)
+{
+	CurrentHp = hp;
 }
 Character::~Character()
 {
