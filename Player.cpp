@@ -10,7 +10,110 @@ void Player::Set_Character(Character c)
 {
 	Player_Char = c;
 }
-void Player::Add_Card(Card c)
+void Player::Add_Card(Card* c)
 {
-	PlayerDeck.push_back(c);
+	PlayerDeck.push_back(c->clone());
+}
+Character Player::Return_Character()
+{
+	return Player_Char;
+}
+std::vector<Card*> Player::Return_PlayerDeck()
+{
+	return PlayerDeck;
+}
+void Player::All_Cards()
+{
+	for (int i = 0; i < PlayerDeck.size(); i++)
+	{
+		std::cout << i <<" --- " << PlayerDeck.at(i)->Return_Card_Name() << std::endl;
+	}
+}
+void Player::All_Discard_Cards()
+{
+	for (int i = 0; i < DiscardDeck.size(); i++)
+	{
+		std::cout << i << " --- " << DiscardDeck.at(i)->Return_Card_Name() << std::endl;
+	}
+}
+void Player::All_Hand_Cards()
+{
+	for (int i = 0; i < HandCards.size(); i++)
+	{
+		std::cout << i << " --- " << HandCards.at(i)->Return_Card_Name() << std::endl;
+	}
+}
+Card* Player::PlayCard()
+{
+	int g;
+	std::cout << "Jaka karte chcesz zagrac? " << std::endl;
+	All_Hand_Cards();
+	std::cin >> g;
+	DiscardDeck.push_back(HandCards.at(g));
+	Card* pc = PlayerDeck.at(g);
+	HandCards.erase(HandCards.begin() + g);
+	Give_Random_Card_to_Hand();
+	return pc;
+}
+void Player::Discard_Card_From_Hand(int g)
+{
+	DiscardDeck.push_back(HandCards.at(g));
+	HandCards.erase(HandCards.begin() + g);
+}
+void Player::Discard_Card_From_Deck(int g)
+{
+	DiscardDeck.push_back(PlayerDeck.at(g));
+	PlayerDeck.erase(PlayerDeck.begin() + g);
+}
+void Player::Return_Discarded_Cards_to_Deck()
+{
+	while(DiscardDeck.size() != 0)
+	{
+		PlayerDeck.push_back(DiscardDeck.at(0));
+		DiscardDeck.erase(DiscardDeck.begin() + 0);
+	}
+}
+void Player::SetHand()
+{
+	for (int i = 0; i < Hand_Size; i++)
+	{
+		int g = rand() % PlayerDeck.size();
+		HandCards.push_back(PlayerDeck.at(g));
+		PlayerDeck.erase(PlayerDeck.begin() + g);
+	}
+}
+void Player::Give_Card_to_Hand(int g)
+{
+	HandCards.push_back(PlayerDeck.at(g));
+	PlayerDeck.erase(PlayerDeck.begin() + g);
+}
+void Player::Give_Random_Card_to_Hand()
+{
+	int g = rand() % PlayerDeck.size();
+	HandCards.push_back(PlayerDeck.at(g));
+	PlayerDeck.erase(PlayerDeck.begin() + g);
+}
+int Player::Return_Max_Energy()
+{
+	return Max_Energy;
+}
+int Player::Return_Current_Energy()
+{
+	return Current_Energy;
+}
+void Player::Add_Energy(int e)
+{
+	Current_Energy += e;
+}
+void Player::Reduce_Energy(int e)
+{
+	Current_Energy -= e;
+}
+void Player::Reset_Energy()
+{
+	Current_Energy = Max_Energy;
+}
+void Player::Set_Hand_Size(int s)
+{
+	Hand_Size = s;
 }

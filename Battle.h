@@ -13,10 +13,14 @@ class Battle
 {
 protected:
 	Player *player;
+	Character player_character;
 	std::vector<Enemy> Battle_Enemies;
 public:
 	Battle();
-	Battle(std::string n, int hp);
+	Battle(Player *pl, std::vector<Enemy> be);
+	
+	void StartBattle();
+
 	~Battle();
 
 };

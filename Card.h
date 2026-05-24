@@ -20,6 +20,8 @@ protected:
 public:
 	Card();
 	Card(std::string n, int e);
+	virtual Card* clone(); //Funkcja zeby mozna robic pare tych samych kart
+	std::string Return_Card_Name();
 	virtual void Card_Effect();
 	virtual ~Card();
 };
@@ -35,6 +37,7 @@ protected:
 public:
 	AttackCard();
 	AttackCard(std::string n, int e, int a);
+	virtual Card* clone();
 	virtual void Card_Effect();
 	virtual ~AttackCard();
 	static Card* kreator(std::string n, int e);
@@ -49,10 +52,26 @@ protected:
 public:
 	ShieldCard();
 	ShieldCard(std::string n, int e, int s);
+	virtual Card* clone();
 	virtual void Card_Effect();
 	virtual ~ShieldCard();
 	static Card* kreator(std::string n, int e);
 	static int const Id = 2;
+};
+
+class AttackShieldCard : public Card
+{
+protected:
+	int Attack = 1;
+	int Shield = 1;
+public:
+	AttackShieldCard();
+	AttackShieldCard(std::string n, int e, int a, int c);
+	virtual Card* clone();
+	virtual void Card_Effect();
+	virtual ~AttackShieldCard();
+	static Card* kreator(std::string n, int e);
+	static int const Id = 3;
 };
 
 class CardFactory

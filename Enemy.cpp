@@ -17,6 +17,26 @@ void Enemy::EnemyBehaviour()
 {
 	std::cout << "Buuuuu cos robie strasznego :3" << std::endl;
 }
+std::string Enemy::Return_Name()
+{
+	return Name;
+}
+int Enemy::Return_MaxHP()
+{
+	return MaxHP;
+}
+int Enemy::Return_CurrentHP()
+{
+	return CurrentHp;
+}
+void Enemy::Set_MaxHP(int hp)
+{
+	MaxHP = hp;
+}
+void Enemy::Set_CurrentHP(int hp)
+{
+	CurrentHp = hp;
+}
 Enemy::~Enemy()
 {
 

@@ -4,11 +4,13 @@ Character::Character()
 {
 	Name = "Missingno";
 	MaxHP = 10;
+	CurrentHp = MaxHP;
 }
 Character::Character(std::string n, int hp)
 {
 	Name = n;
 	MaxHP = hp;
+	CurrentHp = MaxHP;
 }
 std::string Character::Return_Name()
 {
