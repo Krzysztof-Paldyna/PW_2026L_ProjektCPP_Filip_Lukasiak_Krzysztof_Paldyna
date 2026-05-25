@@ -12,14 +12,22 @@ class Enemy;
 class Battle
 {
 protected:
+	int TurnCounter = 0;
 	Player *player;
-	Character player_character;
 	std::vector<Enemy> Battle_Enemies;
 public:
 	Battle();
 	Battle(Player *pl, std::vector<Enemy> be);
 	
-	void StartBattle();
+	Player* Return_Player();
+	std::vector<Enemy>& Return_Enemies();
+
+	void CanPlayCardCheck();
+
+	void EndPlayerTurn();
+	void EnemyAction();
+	void PlayerTurn();
+	void EndBattleCheck();
 
 	~Battle();
 

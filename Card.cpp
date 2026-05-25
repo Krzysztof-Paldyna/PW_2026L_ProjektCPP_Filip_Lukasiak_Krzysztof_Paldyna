@@ -7,24 +7,46 @@ Card::Card(std::string n, int e)
 	Nazwa = n;
 	Energy = e;
 	Card_class = Attack_Card;
+	CardType = None;
 }
 Card::Card()
 {
 	Nazwa = "NienazwanaKarta";
 	Energy = 1;
 	Card_class = Attack_Card;
+	CardType = None;
 }
 Card* Card::clone()
 {
 	return new Card(*this);
 }
-void Card::Card_Effect()
+void Card::Card_Effect(Battle* b)
 {
+	b->Return_Player()->Reduce_Energy(Energy);
 	std::cout << "Efect Karty ktora nie ma efektu czyli jest cos zle "<< std::endl;
+}
+int Card::ChooseEnemy(const std::vector<Enemy>& en)
+{
+	int g;
+	if (en.size() == 1)
+	{
+		return 0;
+	}
+	else
+	{
+		std::cout << "Wybierz wroga " << std::endl;
+		std::cin >> g;
+		return g;
+	}
+	return 0;
 }
 std::string Card::Return_Card_Name()
 {
 	return Nazwa;
+}
+int Card::Return_Card_Cost()
+{
+	return Energy;
 }
 Card::~Card()
 {
@@ -37,6 +59,7 @@ AttackCard::AttackCard()
 	Energy = 1;
 	Card_class = Attack_Card;
 	Attack = 1;
+	CardType = None;
 }
 AttackCard::AttackCard(std::string n, int e, int a)
 {
@@ -44,14 +67,18 @@ AttackCard::AttackCard(std::string n, int e, int a)
 	Energy = e;
 	Attack = a;
 	Card_class = Attack_Card;
+	CardType = None;
 }
 Card* AttackCard::clone() 
 {
 	return new AttackCard(*this);
 }
-void AttackCard::Card_Effect()
+void AttackCard::Card_Effect(Battle* b)
 {
-	std::cout << "Efect Karty Ataku!!! Zadaje " << Attack << " Obrazen " << std::endl;
+	b->Return_Player()->Reduce_Energy(Energy);
+	int w = ChooseEnemy(b->Return_Enemies());
+	std::cout << "Efect Karty Ataku!!! Zadaje " << Attack << " Obrazen " <<b->Return_Enemies().at(w).Return_Name() << std::endl;
+	b->Return_Enemies().at(w).TakeDamage(Attack);
 }
 Card* AttackCard:: kreator(std::string n, int e)
 {
@@ -69,6 +96,7 @@ ShieldCard::ShieldCard()
 	Energy = 1;
 	Card_class = Skill_Card;
 	Shield = 1;
+	CardType = None;
 }
 ShieldCard::ShieldCard(std::string n, int e, int s)
 {
@@ -76,14 +104,17 @@ ShieldCard::ShieldCard(std::string n, int e, int s)
 	Energy = e;
 	Shield = s;
 	Card_class = Skill_Card;
+	CardType = None;
 }
 Card* ShieldCard::clone() 
 {
 	return new ShieldCard(*this);
 }
-void ShieldCard::Card_Effect()
+void ShieldCard::Card_Effect(Battle* b)
 {
-	std::cout << "Efect Karty Obrony!!! Dostaje " << Shield << " Tarczy " << std::endl;
+	b->Return_Player()->Reduce_Energy(Energy);
+	std::cout << "Efect Karty Obrony!!! "<<b->Return_Player()->Return_Character().Return_Name() << " Dostaje " << Shield << " Tarczy " << std::endl;
+	b->Return_Player()->Return_Character().Add_Shield(Shield);
 }
 Card* ShieldCard::kreator(std::string n, int e)
 {
@@ -100,6 +131,7 @@ AttackShieldCard::AttackShieldCard()
 	Energy = 1;
 	Card_class = Attack_Card;
 	Attack = 1;
+	CardType = None;
 }
 AttackShieldCard::AttackShieldCard(std::string n, int e, int a, int c)
 {
@@ -113,9 +145,13 @@ Card* AttackShieldCard::clone()
 {
 	return new AttackShieldCard(*this);
 }
-void AttackShieldCard::Card_Effect()
+void AttackShieldCard::Card_Effect(Battle* b)
 {
-	std::cout << "Efect Karty Ataku!!! Zadaje " << Attack << " Obrazen " <<" i  Dostaje " << Shield << " Tarczy " << std::endl;
+	b->Return_Player()->Reduce_Energy(Energy);
+	int w = ChooseEnemy(b->Return_Enemies());
+	std::cout << "Efect Karty Ataku!!! Zadaje " << Attack << " Obrazen " << b->Return_Enemies().at(w).Return_Name() << " i " << b->Return_Player()->Return_Character().Return_Name() << " Dostaje " << Shield << " Tarczy " << std::endl;
+	b->Return_Enemies().at(w).TakeDamage(Attack);
+	b->Return_Player()->Return_Character().Add_Shield(Shield);
 }
 Card* AttackShieldCard::kreator(std::string n, int e)
 {

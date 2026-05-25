@@ -1,4 +1,3 @@
-#include "Character.h"
 #include "Player.h"
 #include "Card.h"
 #include "Enemy.h"
@@ -24,7 +23,7 @@ int main()
 	Act_Enemies.push_back(*BasicEnemy);
 	//-------------------------------------
 
-	Character g("Pimpek", 20);
+	PlayerCharacter g("Pimpek", 20);
 	
 	//-------------------------------------
 	Player Gracz;
@@ -39,7 +38,7 @@ int main()
 	Gracz.Set_Character(g);
 	//-------------------------------------
 	Battle b(&Gracz, Act_Enemies);
-	b.StartBattle();
+	b.PlayerTurn();
 	
 	return 0;
 }

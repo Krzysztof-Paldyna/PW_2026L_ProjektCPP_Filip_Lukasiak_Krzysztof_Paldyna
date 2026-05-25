@@ -5,6 +5,12 @@
 #include <cstdlib>
 #include <vector>
 #include <map>
+#include "Player.h"
+#include "Enemy.h"
+#include "Battle.h"
+class Player;
+class Enemy;
+class Battle;
 
 enum Card_Class
 {
@@ -17,12 +23,15 @@ protected:
 	std::string Nazwa;
 	int Energy;
 	Card_Class Card_class;
+	ElementType CardType;
 public:
 	Card();
 	Card(std::string n, int e);
 	virtual Card* clone(); //Funkcja zeby mozna robic pare tych samych kart
 	std::string Return_Card_Name();
-	virtual void Card_Effect();
+	int Return_Card_Cost();
+	int ChooseEnemy(const std::vector<Enemy>& en);
+	virtual void Card_Effect(Battle* b);
 	virtual ~Card();
 };
 
@@ -38,7 +47,7 @@ public:
 	AttackCard();
 	AttackCard(std::string n, int e, int a);
 	virtual Card* clone();
-	virtual void Card_Effect();
+	virtual void Card_Effect(Battle* b);
 	virtual ~AttackCard();
 	static Card* kreator(std::string n, int e);
 	static int const Id = 1;
@@ -53,7 +62,7 @@ public:
 	ShieldCard();
 	ShieldCard(std::string n, int e, int s);
 	virtual Card* clone();
-	virtual void Card_Effect();
+	virtual void Card_Effect(Battle* b);
 	virtual ~ShieldCard();
 	static Card* kreator(std::string n, int e);
 	static int const Id = 2;
@@ -68,7 +77,7 @@ public:
 	AttackShieldCard();
 	AttackShieldCard(std::string n, int e, int a, int c);
 	virtual Card* clone();
-	virtual void Card_Effect();
+	virtual void Card_Effect(Battle* b);
 	virtual ~AttackShieldCard();
 	static Card* kreator(std::string n, int e);
 	static int const Id = 3;

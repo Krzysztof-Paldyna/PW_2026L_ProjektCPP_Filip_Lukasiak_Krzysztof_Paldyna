@@ -1,41 +1,103 @@
 #include "Enemy.h"
 
 std::map<int, EnemyCreator> EnemyFactory::Registered_Enemies;
+//-------------------------------------------------------------CharacterBaseline-----------------------------------------------
+Character::Character()
+{
+	Name = "Missingno";
+	MaxHP = 10;
+	CurrentHp = MaxHP;
+	CharacterType = None;
+}
+Character::Character(std::string n, int hp)
+{
+	Name = n;
+	MaxHP = hp;
+	CurrentHp = MaxHP;
+	CharacterType = None;
+}
+std::string Character::Return_Name()
+{
+	return Name;
+}
+int Character::Return_MaxHP()
+{
+	return MaxHP;
+}
+int Character::Return_CurrentHP()
+{
+	return CurrentHp;
+}
+void Character::Set_MaxHP(int hp)
+{
+	MaxHP = hp;
+}
+void Character::Set_CurrentHP(int hp)
+{
+	CurrentHp = hp;
+}
+int Character::Return_Shield()
+{
+	return Shield;
+}
+void Character::Add_Shield(int s)
+{
+	Shield += s;
+}
+void Character::TakeDamage(int dmg)
+{
+	CurrentHp -= dmg;
+	if (CurrentHp <= 0)
+	{
+		CurrentHp = 0;
+		isDead = true;
+	}
+}
+bool Character::Return_isDead()
+{
+	return isDead;
+}
+Character::~Character()
+{
+
+}
+//--------------------------------------------------------------PlayerCharacter-----------------------------------------------
+PlayerCharacter::PlayerCharacter()
+{
+	Name = "MissingnoGracz";
+	MaxHP = 10;
+	CurrentHp = MaxHP;
+	CharacterType = None;
+}
+PlayerCharacter::PlayerCharacter(std::string n, int hp)
+{
+	Name = n;
+	MaxHP = hp;
+	CurrentHp = MaxHP;
+	CharacterType = None;
+}
+PlayerCharacter::~PlayerCharacter()
+{
+
+}
+//--------------------------------------------------------------EnemyBaseline-----------------------------------------------
 Enemy::Enemy()
 {
 	Name = "NienazwanyPrzeciwnik";
 	MaxHP = 10;
 	CurrentHp = MaxHP;
+	CharacterType = None;
 }
 Enemy::Enemy(std::string n, int hp)
 {
 	Name = n;
 	MaxHP = hp;
 	CurrentHp = MaxHP;
+	CharacterType = None;
 }
 void Enemy::EnemyBehaviour()
 {
 	std::cout << "Buuuuu cos robie strasznego :3" << std::endl;
-}
-std::string Enemy::Return_Name()
-{
-	return Name;
-}
-int Enemy::Return_MaxHP()
-{
-	return MaxHP;
-}
-int Enemy::Return_CurrentHP()
-{
-	return CurrentHp;
-}
-void Enemy::Set_MaxHP(int hp)
-{
-	MaxHP = hp;
-}
-void Enemy::Set_CurrentHP(int hp)
-{
-	CurrentHp = hp;
 }
 Enemy::~Enemy()
 {
@@ -47,12 +109,14 @@ BasicEnemy::BasicEnemy()
 	Name = "NienazwanyBasicEnemy";
 	MaxHP = 10;
 	CurrentHp = MaxHP;
+	CharacterType = None;
 }
 BasicEnemy::BasicEnemy(std::string n, int hp)
 {
 	Name = n;
 	MaxHP = hp;
 	CurrentHp = MaxHP;
+	CharacterType = None;
 }
 void BasicEnemy::EnemyBehaviour()
 {

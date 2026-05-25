@@ -2,11 +2,14 @@
 
 Player::Player()
 {
+	Max_Energy = 3;
+	Current_Energy = Max_Energy;
+	Hand_Size = 3;
 }
 Player::~Player()
 {
 }
-void Player::Set_Character(Character c)
+void Player::Set_Character(PlayerCharacter c)
 {
 	Player_Char = c;
 }
@@ -14,13 +17,17 @@ void Player::Add_Card(Card* c)
 {
 	PlayerDeck.push_back(c->clone());
 }
-Character Player::Return_Character()
+PlayerCharacter& Player::Return_Character()
 {
 	return Player_Char;
 }
 std::vector<Card*> Player::Return_PlayerDeck()
 {
 	return PlayerDeck;
+}
+std::vector<Card*> Player::Return_PlayerHand()
+{
+	return HandCards;
 }
 void Player::All_Cards()
 {
@@ -43,16 +50,11 @@ void Player::All_Hand_Cards()
 		std::cout << i << " --- " << HandCards.at(i)->Return_Card_Name() << std::endl;
 	}
 }
-Card* Player::PlayCard()
+Card* Player::PlayCard(int g)
 {
-	int g;
-	std::cout << "Jaka karte chcesz zagrac? " << std::endl;
-	All_Hand_Cards();
-	std::cin >> g;
 	DiscardDeck.push_back(HandCards.at(g));
-	Card* pc = PlayerDeck.at(g);
+	Card* pc = HandCards.at(g);
 	HandCards.erase(HandCards.begin() + g);
-	Give_Random_Card_to_Hand();
 	return pc;
 }
 void Player::Discard_Card_From_Hand(int g)
@@ -92,6 +94,19 @@ void Player::Give_Random_Card_to_Hand()
 	int g = rand() % PlayerDeck.size();
 	HandCards.push_back(PlayerDeck.at(g));
 	PlayerDeck.erase(PlayerDeck.begin() + g);
+}
+void Player::RerollHand()
+{
+	while (HandCards.size() != 0)
+	{
+		DiscardDeck.push_back(HandCards.at(0));
+		HandCards.erase(HandCards.begin() + 0);
+	}
+	if (PlayerDeck.size() < Hand_Size)
+	{
+		Return_Discarded_Cards_to_Deck();
+	}
+	SetHand();
 }
 int Player::Return_Max_Energy()
 {

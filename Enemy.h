@@ -6,22 +6,61 @@
 #include <vector>
 #include <map>
 
-class Enemy
+enum ElementType
+{
+	None= 0,
+	Fire,
+	Water,
+	Wind,
+	Ground, 
+	Plant,
+	Electric,
+	Ice
+};
+
+class Character
 {
 protected:
 	std::string Name;
 	int MaxHP;
 	int CurrentHp;
+	int Shield = 0;
+	bool isDead = false;
+	ElementType CharacterType;
 public:
-	Enemy();
-	Enemy(std::string n, int hp);
-	virtual ~Enemy();
+	Character();
+	Character(std::string n, int hp);
+	~Character();
 
 	std::string Return_Name();
 	int Return_MaxHP();
 	int Return_CurrentHP();
 	void Set_CurrentHP(int hp);
 	void Set_MaxHP(int hp);
+	void Add_Shield(int s);
+	int Return_Shield();
+	bool Return_isDead();
+
+	void TakeDamage(int dmg);
+
+};
+class PlayerCharacter : public Character
+{
+private:
+public:
+	PlayerCharacter();
+	PlayerCharacter(std::string n, int hp);
+	~PlayerCharacter();
+};
+
+class Enemy: public Character
+{
+protected:
+	
+public:
+	Enemy();
+	Enemy(std::string n, int hp);
+	virtual ~Enemy();
 
 	virtual void EnemyBehaviour();
 };
