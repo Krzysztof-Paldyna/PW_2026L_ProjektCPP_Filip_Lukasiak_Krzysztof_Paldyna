@@ -47,7 +47,7 @@ int main(){
     // create the window
     sf::RenderWindow window(sf::VideoMode({1800, 1000}), "Giereczka");
     sf::Font card_font;
-    card_font.loadFromFile(".resources/fonts/Andale_Mono.ttf");
+    card_font.loadFromFile("resources/fonts/Andale_Mono.ttf");
 
     //DO PRZEROBIENIA: UPDATE TEKSTUR:
     for(auto &v : b.Return_Player()->Return_PlayerHand()){
@@ -64,10 +64,10 @@ int main(){
     b.Return_Enemies().at(0).set_hp(hp - 5);
 
     /*
-    graphics_object_card MOJA_KARTA("Karcioszka", "1", "fajny tekst,\nno zajebisty nawet \nmozna wrappowac", ".resources/textures/cry.jpg", 20, 20);
-    graphics_object_card AHA("HAHA", "3", "piach?", ".resources/textures/aaa.jpg", 20, 400, 255, 255, 0, 255);
+    graphics_object_card MOJA_KARTA("Karcioszka", "1", "fajny tekst,\nno zajebisty nawet \nmozna wrappowac", "resources/textures/cry.jpg", 20, 20);
+    graphics_object_card AHA("HAHA", "3", "piach?", "resources/textures/aaa.jpg", 20, 400, 255, 255, 0, 255);
     graphics_object_end_turn bum;
-    graphics_object_character czesio("Czesio", ".resources/textures/cry.jpg", 300, 300, 800, 200);
+    graphics_object_character czesio("Czesio", "resources/textures/cry.jpg", 300, 300, 800, 200);
     std::vector<graphics_object_card> objects;
     objects.push_back(MOJA_KARTA);
     objects.push_back(AHA);
