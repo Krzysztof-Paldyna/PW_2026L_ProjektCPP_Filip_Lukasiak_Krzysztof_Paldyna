@@ -8,6 +8,10 @@ Card::Card(std::string n, int e)
 	Energy = e;
 	Card_class = Attack_Card;
 	CardType = None;
+	//elementy graficzne:
+	name = n;
+	cost = std::to_string(e);
+	file_path = "None";
 }
 Card::Card()
 {
@@ -52,6 +56,7 @@ Card::~Card()
 {
 
 }
+
 //--------------------------------------------------------------AttackCard-----------------------------------------------
 AttackCard::AttackCard()
 {
@@ -68,6 +73,11 @@ AttackCard::AttackCard(std::string n, int e, int a)
 	Attack = a;
 	Card_class = Attack_Card;
 	CardType = None;
+	//elementy graficzne:
+	name = n;
+	cost = std::to_string(e);
+	text = "Ta Karta Atakuje za 5 dmg";
+	file_path = "None";
 }
 Card* AttackCard::clone() 
 {
@@ -98,13 +108,18 @@ ShieldCard::ShieldCard()
 	Shield = 1;
 	CardType = None;
 }
-ShieldCard::ShieldCard(std::string n, int e, int s)
+ShieldCard::ShieldCard(std::string n, int e)
 {
 	Nazwa = n;
 	Energy = e;
-	Shield = s;
+	Shield = 5;
 	Card_class = Skill_Card;
 	CardType = None;
+	//elementy graficzne:
+	name = n;
+	cost = std::to_string(e);
+	text = "Ta Karta daje 5 Tarczy";
+	file_path = "None";
 }
 Card* ShieldCard::clone() 
 {
@@ -118,7 +133,7 @@ void ShieldCard::Card_Effect(Battle* b)
 }
 Card* ShieldCard::kreator(std::string n, int e)
 {
-	return new ShieldCard(n, e, 5);
+	return new ShieldCard(n, e);
 }
 ShieldCard::~ShieldCard()
 {
@@ -140,6 +155,11 @@ AttackShieldCard::AttackShieldCard(std::string n, int e, int a, int c)
 	Attack = a;
 	Shield = c;
 	Card_class = Attack_Card;
+	//elementy graficzne:
+	name = n;
+	cost = std::to_string(e);
+	text = "Ta Karta Atakuje za 2 dmg\ni daje 2 tarczy";
+	file_path = ".resources/textures/aaa.jpg";
 }
 Card* AttackShieldCard::clone()
 {

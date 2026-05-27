@@ -4,7 +4,7 @@ Player::Player()
 {
 	Max_Energy = 3;
 	Current_Energy = Max_Energy;
-	Hand_Size = 3;
+	Hand_Size = 5;
 }
 Player::~Player()
 {

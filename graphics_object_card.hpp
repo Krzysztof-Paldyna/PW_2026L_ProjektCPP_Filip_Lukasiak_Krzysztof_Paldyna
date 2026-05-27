@@ -17,7 +17,13 @@ public:
     graphics_object_card(std::string name = "MISSING NAME", std::string cost = "0", std::string text = "MISSING CARD TEXT", std::string file_path = "None", uint x = 0, uint y = 0, uint red = 128, uint green = 128, uint blue = 128, uint alpha = 255); //konstruktor domyślno-parametryczny (WYMIAR KARTY USTAWIONY NA STALE)
     ~graphics_object_card();  //destruktor
 
+    graphics_object_card& operator=(const graphics_object_card &other);
+
+    void set_cost(int card_cost);
+    void set_text(std::string card_text);
     void draw(sf::RenderWindow &window, sf::Font &font) override; //przeciążana funkcja rysująca kartę w podanym oknie SMFL, z użyciem podanej czcionki
+
+    void update_texture();
 };
 
 #endif

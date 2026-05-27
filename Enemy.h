@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <vector>
 #include <map>
+#include "graphics_object_character.hpp"
 
 enum ElementType
 {
@@ -18,7 +19,7 @@ enum ElementType
 	Ice
 };
 
-class Character
+class Character : public graphics_object_character
 {
 protected:
 	std::string Name;

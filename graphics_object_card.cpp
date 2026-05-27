@@ -18,6 +18,25 @@ graphics_object_card::~graphics_object_card(){//destruktor
 
 }
 
+void graphics_object_card::set_cost(int card_cost){
+    cost = std::to_string(card_cost);
+}
+
+void graphics_object_card::set_text(std::string card_text){
+    text = card_text;
+}   
+
+graphics_object_card& graphics_object_card::operator=(const graphics_object_card &other){
+    name = other.name;
+    cost = other.cost;
+    text = other.text;
+    file_path = other.file_path;
+    card_border = other.card_border;
+    is_highlighted = other.is_highlighted;
+    return *this;
+}
+
+
 void graphics_object_card::draw(sf::RenderWindow &window, sf::Font &font){//przeciążana funkcja rysująca kartę w podanym oknie SMFL, z użyciem podanej czcionki
     //jeśli obiekt jest highlightowany zmienia kolor i grubość ramki karty
     switch(is_highlighted){
@@ -83,4 +102,11 @@ void graphics_object_card::draw(sf::RenderWindow &window, sf::Font &font){//prze
     cost_value.setStyle(sf::Text::Bold);
     cost_value.setPosition(x + dim_x - cost_bubble.getRadius(), y - 5);
     window.draw(cost_value);
+}
+
+void graphics_object_card::update_texture(){
+    if(file_path != "None"){
+        card_texture.loadFromFile(file_path, sf::IntRect({0, 0}, {int(dim_x - 12), 120}));  //ładujemy teksturę (pierwsza para argumentów pokazuje start tekstury, druga wycinany rozmiar)
+        card_image.setTexture(card_texture);
+    }
 }

@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Battle.h"
+#include "graphics_object_card.hpp"
 class Player;
 class Enemy;
 class Battle;
@@ -17,13 +18,16 @@ enum Card_Class
 	Attack_Card = 1,
 	Skill_Card
 };
-class Card
+class Card : public graphics_object_card
 {
 protected:
 	std::string Nazwa;
+	std::string Opis;
+	std::string Path;
 	int Energy;
 	Card_Class Card_class;
 	ElementType CardType;
+
 public:
 	Card();
 	Card(std::string n, int e);
@@ -60,7 +64,7 @@ protected:
 	int Shield = 1;
 public:
 	ShieldCard();
-	ShieldCard(std::string n, int e, int s);
+	ShieldCard(std::string n, int e);
 	virtual Card* clone();
 	virtual void Card_Effect(Battle* b);
 	virtual ~ShieldCard();

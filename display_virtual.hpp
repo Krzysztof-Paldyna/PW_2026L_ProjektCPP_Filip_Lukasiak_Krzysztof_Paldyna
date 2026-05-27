@@ -15,7 +15,7 @@ protected:
 public:
     //konstruktory i destruktor:
     display_virtual(unsigned int x = 1600, unsigned int y = 1200) : dim_x(x), dim_y(y) {}  //konstruktor domyślno-parametryczny
-    ~display_virtual(); //destruktor
+    ~display_virtual() {} //destruktor
 
     //gettery:
     unsigned int get_dim_x() {return dim_x;}

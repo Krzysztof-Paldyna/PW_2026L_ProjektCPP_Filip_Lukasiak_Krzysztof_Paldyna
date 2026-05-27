@@ -8,6 +8,11 @@ Character::Character()
 	MaxHP = 10;
 	CurrentHp = MaxHP;
 	CharacterType = None;
+	//zmienne klasy graphics_object_character:
+	name = Name;
+	file_path = ".resources/textures/cry.jpg";
+	max_hp = MaxHP;
+	current_hp = CurrentHp;
 }
 Character::Character(std::string n, int hp)
 {
@@ -15,6 +20,11 @@ Character::Character(std::string n, int hp)
 	MaxHP = hp;
 	CurrentHp = MaxHP;
 	CharacterType = None;
+	//zmienne klasy graphics_object_character:
+	name = Name;
+	file_path = ".resources/textures/cry.jpg";
+	max_hp = MaxHP;
+	current_hp = CurrentHp;
 }
 std::string Character::Return_Name()
 {
@@ -68,6 +78,11 @@ PlayerCharacter::PlayerCharacter()
 	MaxHP = 10;
 	CurrentHp = MaxHP;
 	CharacterType = None;
+	//zmienne klasy graphics_object_character:
+	name = Name;
+	file_path = ".resources/textures/apolocheese.jpg";
+	max_hp = MaxHP;
+	current_hp = CurrentHp;
 }
 PlayerCharacter::PlayerCharacter(std::string n, int hp)
 {
@@ -75,6 +90,11 @@ PlayerCharacter::PlayerCharacter(std::string n, int hp)
 	MaxHP = hp;
 	CurrentHp = MaxHP;
 	CharacterType = None;
+	//zmienne klasy graphics_object_character:
+	name = Name;
+	file_path = ".resources/textures/apolocheese.jpg";
+	max_hp = MaxHP;
+	current_hp = CurrentHp;
 }
 PlayerCharacter::~PlayerCharacter()
 {
@@ -87,6 +107,11 @@ Enemy::Enemy()
 	MaxHP = 10;
 	CurrentHp = MaxHP;
 	CharacterType = None;
+	//zmienne klasy graphics_object_character:
+	name = Name;
+	file_path = ".resources/textures/cry.jpg";
+	max_hp = MaxHP;
+	current_hp = CurrentHp;
 }
 Enemy::Enemy(std::string n, int hp)
 {
@@ -94,6 +119,11 @@ Enemy::Enemy(std::string n, int hp)
 	MaxHP = hp;
 	CurrentHp = MaxHP;
 	CharacterType = None;
+	//zmienne klasy graphics_object_character:
+	name = Name;
+	file_path = ".resources/textures/cry.jpg";
+	max_hp = MaxHP;
+	current_hp = CurrentHp;
 }
 void Enemy::EnemyBehaviour()
 {
@@ -110,6 +140,11 @@ BasicEnemy::BasicEnemy()
 	MaxHP = 10;
 	CurrentHp = MaxHP;
 	CharacterType = None;
+	//zmienne klasy graphics_object_character:
+	name = Name;
+	file_path = ".resources/textures/cry.jpg";
+	max_hp = MaxHP;
+	current_hp = CurrentHp;
 }
 BasicEnemy::BasicEnemy(std::string n, int hp)
 {
@@ -117,6 +152,11 @@ BasicEnemy::BasicEnemy(std::string n, int hp)
 	MaxHP = hp;
 	CurrentHp = MaxHP;
 	CharacterType = None;
+	//zmienne klasy graphics_object_character:
+	name = Name;
+	file_path = ".resources/textures/cry.jpg";
+	max_hp = MaxHP;
+	current_hp = CurrentHp;
 }
 void BasicEnemy::EnemyBehaviour()
 {
