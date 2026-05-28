@@ -13,10 +13,12 @@ int main(){
 	CardFactory::regist(1, &AttackCard::kreator);
 	CardFactory::regist(2, &ShieldCard::kreator);
 	CardFactory::regist(3, &AttackShieldCard::kreator);
+    CardFactory::regist(4, &DrawCard::kreator);
 	
 	Card* BasicAttack = CardFactory::create(1, "BasicAttack", 1);
 	Card* BasicShield = CardFactory::create(2, "BasicShield", 1);
 	Card* BasicAttackShield = CardFactory::create(3, "BasicAttackShield", 1);
+    Card* DrawCard = CardFactory::create(4, "Draw Card", 0);
 	//-------------------------------------
 
 	//-------------------------------------
@@ -39,6 +41,7 @@ int main(){
 	Gracz.Add_Card(BasicShield);
 	Gracz.Add_Card(BasicAttackShield);
 	Gracz.Add_Card(BasicAttackShield);
+    Gracz.Add_Card(DrawCard);
 	Gracz.Set_Character(g);
 	//-------------------------------------
 	
@@ -46,11 +49,9 @@ int main(){
     // create the window
     sf::RenderWindow window(sf::VideoMode({1800, 1000}), "Giereczka");
     Battle b(&Gracz, Act_Enemies, &window);
-    sf::Font card_font;
-    card_font.loadFromFile(".resources/fonts/Andale_Mono.ttf");
 
 
-    
+    /*
     //DO PRZEROBIENIA: UPDATE TEKSTUR:
     for(auto &v : b.Return_Player()->Return_PlayerHand()){
         v->update_texture();
@@ -59,8 +60,7 @@ int main(){
         v.update_texture();
     }
     b.Return_Player()->Return_Character().update_texture();
-    
-
+    */
 
     /*
     graphics_object_card MOJA_KARTA("Karcioszka", "1", "fajny tekst,\nno zajebisty nawet \nmozna wrappowac", ".resources/textures/cry.jpg", 20, 20);
@@ -111,13 +111,16 @@ int main(){
                     int x = event.mouseButton.x;
                     int y = event.mouseButton.y;
                     b.Handle_Mouse_Click(x, y);
+                    for(auto &v : b.Return_Enemies())
+                    {
+                        v.update_texture();
+                    }   
                 }
             }
             // end the current frame
             window.display();
         }
 
-    b.PlayerTurn();
 
 	return 0;
 }

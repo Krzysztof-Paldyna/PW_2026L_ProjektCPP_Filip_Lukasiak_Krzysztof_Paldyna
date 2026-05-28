@@ -10,8 +10,7 @@ Battle::Battle(Player* pl, std::vector<Enemy> be, sf::RenderWindow *bw)
 	Battle_Enemies = be;
 	player->SetHand();
 	battle_window = bw;
-	card_font.loadFromFile("/home/STUDENT/s01197964/SlayTheSpire/resources/fonts/Andale_Mono.ttf");
-
+	card_font.loadFromFile("resources/fonts/Andale_Mono.ttf");
 }
 void Battle::PlayerTurn()
 {
@@ -99,6 +98,7 @@ void Battle::Render_Cards()
         auto card = player->Return_PlayerHand().at(i);
         card->set_position(int((battle_window->getSize().x / (cards_on_hand + 1) * (i + 1) - card->get_dim_x()/2)), int(battle_window->getSize().y - card->get_dim_y() - 10));
         card->draw(*battle_window, card_font);
+		card->update_texture();
     }
 }
 void Battle::Render_Player()
@@ -106,7 +106,7 @@ void Battle::Render_Player()
 	//rysowanie postaci gracza
     player->Return_Character().set_position(int(battle_window->getSize().x / 6 - player->Return_Character().get_dim_x()/2), int (battle_window->getSize().y / 4));
     player->Return_Character().draw(*battle_window, card_font);
-
+	player->Return_Character().update_texture();
 }
 void Battle::Render_Enemies()
 {
@@ -114,6 +114,7 @@ void Battle::Render_Enemies()
 	{
         Battle_Enemies.at(i).set_position(int(battle_window->getSize().x / 2 * (1 + 1/((Battle_Enemies.size() + 1) * (i + 1))) + Battle_Enemies.at(i).get_dim_x()), int(battle_window->getSize().y / 4));
         Battle_Enemies.at(i).draw(*battle_window, card_font);
+		Battle_Enemies.at(i).update_texture();
     }
 }
 void Battle::Select_Card(int mx, int my)
@@ -267,6 +268,21 @@ void Battle::EnemyAction()
 	}
 	TurnCounter += 1;
 	PlayerTurn();
+}
+void Battle::EndBattleCheck()
+{
+	bool End = true;
+	for(int i = 0; i < Battle_Enemies.size(); i++)
+	{
+		if(Battle_Enemies.at(i).Return_isDead() == false)
+		{
+			End = false;
+		}
+	}
+	if(End == true)
+	{
+		std::cout<<" KONIEC "<<std::endl;
+	}
 }
 std::vector<Enemy>& Battle::Return_Enemies()
 {

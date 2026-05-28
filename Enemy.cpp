@@ -10,7 +10,7 @@ Character::Character()
 	CharacterType = None;
 	//zmienne klasy graphics_object_character:
 	name = Name;
-	file_path = "/home/STUDENT/s01197964/SlayTheSpire/resources/textures/Excusemesir.png";
+	file_path = "None";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
 }
@@ -22,7 +22,7 @@ Character::Character(std::string n, int hp)
 	CharacterType = None;
 	//zmienne klasy graphics_object_character:
 	name = Name;
-	file_path = ".resources/textures/cry.jpg";
+	file_path = "None";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
 }
@@ -57,6 +57,7 @@ void Character::Add_Shield(int s)
 void Character::TakeDamage(int dmg)
 {
 	CurrentHp -= dmg;
+	set_hp(CurrentHp);
 	if (CurrentHp <= 0)
 	{
 		CurrentHp = 0;
@@ -80,7 +81,7 @@ PlayerCharacter::PlayerCharacter()
 	CharacterType = None;
 	//zmienne klasy graphics_object_character:
 	name = Name;
-	file_path = "/home/STUDENT/s01197964/SlayTheSpire/resources/textures/Excusemesir.png";
+	file_path = "None";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
 }
@@ -92,7 +93,7 @@ PlayerCharacter::PlayerCharacter(std::string n, int hp)
 	CharacterType = None;
 	//zmienne klasy graphics_object_character:
 	name = Name;
-	file_path = "/home/STUDENT/s01197964/SlayTheSpire/resources/textures/Excusemesir.png";
+	file_path = "resources/textures/PlayerCharacter.png";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
 }
@@ -109,7 +110,7 @@ Enemy::Enemy()
 	CharacterType = None;
 	//zmienne klasy graphics_object_character:
 	name = Name;
-	file_path = ".resources/textures/cry.jpg";
+	file_path = "None";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
 }
@@ -121,7 +122,7 @@ Enemy::Enemy(std::string n, int hp)
 	CharacterType = None;
 	//zmienne klasy graphics_object_character:
 	name = Name;
-	file_path = ".resources/textures/cry.jpg";
+	file_path = "None";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
 }
@@ -142,7 +143,7 @@ BasicEnemy::BasicEnemy()
 	CharacterType = None;
 	//zmienne klasy graphics_object_character:
 	name = Name;
-	file_path = ".resources/textures/cry.jpg";
+	file_path = "None";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
 }
@@ -154,7 +155,7 @@ BasicEnemy::BasicEnemy(std::string n, int hp)
 	CharacterType = None;
 	//zmienne klasy graphics_object_character:
 	name = Name;
-	file_path = "/home/STUDENT/s01197964/SlayTheSpire/resources/textures/Ididthings.png";
+	file_path = "resources/textures/BasicEnemy.png";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
 }

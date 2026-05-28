@@ -77,7 +77,7 @@ AttackCard::AttackCard(std::string n, int e, int a)
 	name = n;
 	cost = std::to_string(e);
 	text = "Ta Karta Atakuje za 5 dmg";
-	file_path = "None";
+	file_path = "resources/textures/BasicAttack.png";
 }
 Card* AttackCard::clone() 
 {
@@ -178,6 +178,44 @@ Card* AttackShieldCard::kreator(std::string n, int e)
 	return new AttackShieldCard(n, e, 2, 2);
 }
 AttackShieldCard::~AttackShieldCard()
+{
+
+}
+//--------------------------------------------------------------DrawCard-----------------------------------------------
+DrawCard::DrawCard()
+{
+	Nazwa = "NienazwanaKartaTarczy";
+	Energy = 1;
+	Card_class = Skill_Card;
+	CardType = None;
+}
+DrawCard::DrawCard(std::string n, int e)
+{
+	Nazwa = n;
+	Energy = e;
+	Card_class = Skill_Card;
+	CardType = None;
+	//elementy graficzne:
+	name = n;
+	cost = std::to_string(e);
+	text = "Dobierz dwie karty";
+	file_path = "None";
+}
+Card* DrawCard::clone() 
+{
+	return new DrawCard(*this);
+}
+void DrawCard::Card_Effect(Battle* b)
+{
+	b->Return_Player()->Reduce_Energy(Energy);
+	b->Return_Player()->Give_Random_Card_to_Hand();
+	b->Return_Player()->Give_Random_Card_to_Hand();
+}
+Card* DrawCard::kreator(std::string n, int e)
+{
+	return new DrawCard(n, e);
+}
+DrawCard::~DrawCard()
 {
 
 }

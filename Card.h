@@ -87,6 +87,20 @@ public:
 	static int const Id = 3;
 };
 
+class DrawCard: public Card
+{
+protected:
+public:
+	DrawCard();
+	DrawCard(std::string n, int e);
+	virtual Card* clone();
+	virtual void Card_Effect(Battle* b);
+	virtual ~DrawCard();
+	static Card* kreator(std::string n, int e);
+	static int const Id = 4;
+};
+
+
 class CardFactory
 {
 private:
