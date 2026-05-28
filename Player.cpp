@@ -4,7 +4,7 @@ Player::Player()
 {
 	Max_Energy = 3;
 	Current_Energy = Max_Energy;
-	Hand_Size = 5;
+	Hand_Size = 4;
 }
 Player::~Player()
 {
@@ -21,11 +21,11 @@ PlayerCharacter& Player::Return_Character()
 {
 	return Player_Char;
 }
-std::vector<Card*> Player::Return_PlayerDeck()
+std::vector<Card*> &Player::Return_PlayerDeck()
 {
 	return PlayerDeck;
 }
-std::vector<Card*> Player::Return_PlayerHand()
+std::vector<Card*> &Player::Return_PlayerHand()
 {
 	return HandCards;
 }

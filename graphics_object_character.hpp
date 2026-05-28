@@ -8,6 +8,7 @@
 */
 class graphics_object_character : public graphics_object{
 protected:
+    sf::RectangleShape character_border; 
     sf::Texture character_texture;   //tekstura która jest wyświetlana na karcie, MUSI BYĆ bo sprite odwołuje się pointerem do tekstury
     sf::Sprite character_image;    //sprite wyświetlany na karcie
     uint max_hp;    

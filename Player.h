@@ -27,8 +27,8 @@ public:
 	void Set_Character(PlayerCharacter c);
 	PlayerCharacter& Return_Character();
 
-	std::vector<Card*> Return_PlayerDeck();
-	std::vector<Card*> Return_PlayerHand();
+	std::vector<Card*> &Return_PlayerDeck();
+	std::vector<Card*> &Return_PlayerHand();
 	void All_Cards(); //wypisuje nazwy wszystkich kart
 	void All_Discard_Cards(); // Wypisuje nazwy wszystkich kart w kupce Discarded/odrzyconych
 	void All_Hand_Cards();

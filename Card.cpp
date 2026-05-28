@@ -86,9 +86,9 @@ Card* AttackCard::clone()
 void AttackCard::Card_Effect(Battle* b)
 {
 	b->Return_Player()->Reduce_Energy(Energy);
-	int w = ChooseEnemy(b->Return_Enemies());
-	std::cout << "Efect Karty Ataku!!! Zadaje " << Attack << " Obrazen " <<b->Return_Enemies().at(w).Return_Name() << std::endl;
-	b->Return_Enemies().at(w).TakeDamage(Attack);
+	std::cout << "Efect Karty Ataku!!! Zadaje " << Attack << " Obrazen " <<b->Return_Selected_Enemy()->Return_Name() << std::endl;
+	std::cout<< "Ma aktualnie "<< b->Return_Selected_Enemy()->Return_CurrentHP()<<std::endl;
+	b->Return_Selected_Enemy()->TakeDamage(Attack);
 }
 Card* AttackCard:: kreator(std::string n, int e)
 {
@@ -128,8 +128,9 @@ Card* ShieldCard::clone()
 void ShieldCard::Card_Effect(Battle* b)
 {
 	b->Return_Player()->Reduce_Energy(Energy);
-	std::cout << "Efect Karty Obrony!!! "<<b->Return_Player()->Return_Character().Return_Name() << " Dostaje " << Shield << " Tarczy " << std::endl;
-	b->Return_Player()->Return_Character().Add_Shield(Shield);
+	std::cout << "Efect Karty Ataku!!! Zadaje " << Shield << " Obrazen " <<b->Return_Selected_Enemy()->Return_Name() << std::endl;
+	std::cout<< "Ma aktualnie "<< b->Return_Selected_Enemy()->Return_CurrentHP()<<std::endl;
+	b->Return_Selected_Enemy()->TakeDamage(Shield);
 }
 Card* ShieldCard::kreator(std::string n, int e)
 {
@@ -159,7 +160,7 @@ AttackShieldCard::AttackShieldCard(std::string n, int e, int a, int c)
 	name = n;
 	cost = std::to_string(e);
 	text = "Ta Karta Atakuje za 2 dmg\ni daje 2 tarczy";
-	file_path = "resources/textures/aaa.jpg";
+	file_path = ".resources/textures/aaa.jpg";
 }
 Card* AttackShieldCard::clone()
 {
@@ -168,10 +169,9 @@ Card* AttackShieldCard::clone()
 void AttackShieldCard::Card_Effect(Battle* b)
 {
 	b->Return_Player()->Reduce_Energy(Energy);
-	int w = ChooseEnemy(b->Return_Enemies());
-	std::cout << "Efect Karty Ataku!!! Zadaje " << Attack << " Obrazen " << b->Return_Enemies().at(w).Return_Name() << " i " << b->Return_Player()->Return_Character().Return_Name() << " Dostaje " << Shield << " Tarczy " << std::endl;
-	b->Return_Enemies().at(w).TakeDamage(Attack);
-	b->Return_Player()->Return_Character().Add_Shield(Shield);
+	std::cout << "Efect Karty Ataku!!! Zadaje " << Attack << " Obrazen " <<b->Return_Selected_Enemy()->Return_Name() << std::endl;
+	std::cout<< "Ma aktualnie "<< b->Return_Selected_Enemy()->Return_CurrentHP()<<std::endl;
+	b->Return_Selected_Enemy()->TakeDamage(Attack);
 }
 Card* AttackShieldCard::kreator(std::string n, int e)
 {
