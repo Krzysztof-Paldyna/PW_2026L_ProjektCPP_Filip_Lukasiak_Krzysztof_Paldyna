@@ -12,7 +12,7 @@ protected:
     int max_energy;
     int current_energy;
 public:
-    graphics_object_energy_counter(std::string name = "ENERGY COUNTER", std::string path = "None", uint dim_x = 40, uint dim_y = 40, uint x = 200, uint y = 400); //konstruktor domyślny (POZYCJA PRZYCISKU USTAWIONA NA STAŁE)
+    graphics_object_energy_counter(std::string name = "ENERGY COUNTER", std::string path = "None", uint dim_x = 40, uint dim_y = 40, uint x = 20, uint y = 400); //konstruktor domyślny (POZYCJA PRZYCISKU USTAWIONA NA STAŁE)
     ~graphics_object_energy_counter();  //destruktor
 
     void update_max_energy(int e_max);
