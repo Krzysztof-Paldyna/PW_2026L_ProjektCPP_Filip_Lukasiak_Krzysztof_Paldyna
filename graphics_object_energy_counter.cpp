@@ -1,5 +1,5 @@
 #include "graphics_object_energy_counter.hpp"
-graphics_object_energy_counter::graphics_object_energy_counter(std::string name, std::string path, uint dim_x, uint dim_y, uint, uint y) : graphics_object(name, path, dim_x, dim_y, x, y){//konstruktor domyślny (POZYCJA PRZYCISKU USTAWIONA NA STAŁE)
+graphics_object_energy_counter::graphics_object_energy_counter(std::string name, std::string path, uint dim_x, uint dim_y, uint x, uint y) : graphics_object(name, path, dim_x, dim_y, x, y){//konstruktor domyślny (POZYCJA PRZYCISKU USTAWIONA NA STAŁE)
     counter.setPosition(x, y);
     counter.setRadius(float(dim_x));
     counter.setFillColor(sf::Color(0, 200, 40));
