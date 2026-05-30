@@ -4,16 +4,22 @@ Battle::Battle()
 {
 	player = new Player;
 }
-Battle::Battle(Player* pl, std::vector<Enemy> be, sf::RenderWindow *bw)
+Battle::Battle(Player* pl, std::vector<Enemy> be, sf::RenderWindow *bw, graphics_object_end_turn *end, graphics_object_energy_counter *e_counter)
 {
 	player = pl;
 	Battle_Enemies = be;
 	player->SetHand();
 	battle_window = bw;
 	card_font.loadFromFile("resources/fonts/Andale_Mono.ttf");
+	end_turn_button = end;
+	energy_counter = e_counter;
+	energy_counter->update_max_energy(player->Return_Max_Energy());
+	energy_counter->update_current_energy(player->Return_Current_Energy());
 }
 void Battle::PlayerTurn()
 {
+	end_turn_button->set_is_Player_Turn(true);
+	energy_counter->update_current_energy(player->Return_Current_Energy());
 	bool g = false;
 	int tt;
 	while (g == true)
@@ -88,6 +94,8 @@ void Battle::EndPlayerTurn()
 {
 	player->Reset_Energy();
 	player->RerollHand();
+	end_turn_button->set_highlight_state(highlight::none);
+	end_turn_button->set_is_Player_Turn(false);
 	EnemyAction();
 }
 void Battle::Render_Cards()
@@ -117,6 +125,18 @@ void Battle::Render_Enemies()
 		Battle_Enemies.at(i).update_texture();
     }
 }
+
+
+void Battle::Render_End_Turn_Button()
+{
+	end_turn_button->draw(*battle_window, card_font);
+}
+
+void Battle::Render_Energy_Counter(){
+	energy_counter->draw(*battle_window, card_font);
+}
+
+
 void Battle::Select_Card(int mx, int my)
 {
 	for(int i = 0; i < player->Return_PlayerHand().size(); i++)
@@ -154,33 +174,44 @@ void Battle::Handle_Mouse_Click(int mx, int my)
 
     bool kliknieto_karte = false;
     bool kliknieto_wroga = false;
+	bool kliknieto_end = false;
+
+	int x = end_turn_button->get_x();
+	int y = end_turn_button->get_y();
+	int dim_x = end_turn_button->get_dim_x();
+	int dim_y = end_turn_button->get_dim_y();
+	if(mx >= x && mx <= x + dim_x && my >= y && my <= y + dim_y){
+		kliknieto_end = true;
+		end_turn_button->set_highlight_state(highlight::positive);
+		EndPlayerTurn();
+	}
+
+    if(!kliknieto_end){
+		for(int i = 0; i < player->Return_PlayerHand().size(); i++)
+		{
+			Card* sprawdzana_karta = player->Return_PlayerHand().at(i);
+			int x = sprawdzana_karta->get_x();
+			int y = sprawdzana_karta->get_y();
+			int dim_x = sprawdzana_karta->get_dim_x();
+			int dim_y = sprawdzana_karta->get_dim_y();
+
+			if(mx >= x && mx <= x + dim_x && my >= y && my <= y + dim_y)
+			{
+
+				if(Selected_Card != nullptr) {
+					Selected_Card->set_highlight_state(highlight::none);
+				}
 
 
-    for(int i = 0; i < player->Return_PlayerHand().size(); i++)
-    {
-        Card* sprawdzana_karta = player->Return_PlayerHand().at(i);
-        int x = sprawdzana_karta->get_x();
-        int y = sprawdzana_karta->get_y();
-        int dim_x = sprawdzana_karta->get_dim_x();
-        int dim_y = sprawdzana_karta->get_dim_y();
-
-        if(mx >= x && mx <= x + dim_x && my >= y && my <= y + dim_y)
-        {
-
-            if(Selected_Card != nullptr) {
-                Selected_Card->set_highlight_state(highlight::none);
-            }
-
-
-            sprawdzana_karta->set_highlight_state(highlight::positive);
-            Selected_Card = sprawdzana_karta;
-            Selected_Card_Index = i;
-            
-            kliknieto_karte = true;
-            break;
-        }
-    }
-
+				sprawdzana_karta->set_highlight_state(highlight::positive);
+				Selected_Card = sprawdzana_karta;
+				Selected_Card_Index = i;
+				
+				kliknieto_karte = true;
+				break;
+			}
+		}
+	}
 
     if (!kliknieto_karte)
     {
@@ -297,6 +328,7 @@ void Battle::CanPlayCardCheck()
 	if (player->Return_Current_Energy() >= player->Return_PlayerHand().at(g)->Return_Card_Cost())
 	{
 		player->PlayCard(g)->Card_Effect(this);
+		energy_counter->update_current_energy(player->Return_Current_Energy());
 	}
 	else
 	{
@@ -308,6 +340,7 @@ void Battle::CanPlayCardCheck2(Card *c, Enemy *e, int i)
 	if (player->Return_Current_Energy() >= c->Return_Card_Cost())
 	{
 		player->PlayCard(i)->Card_Effect(this);
+		energy_counter->update_current_energy(player->Return_Current_Energy());
 	}
 	else
 	{
