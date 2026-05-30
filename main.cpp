@@ -45,22 +45,12 @@ int main(){
 	Gracz.Set_Character(g);
 	//-------------------------------------
 	
+    graphics_object_end_turn end;
+    graphics_object_energy_counter e_counter;
 
     // create the window
     sf::RenderWindow window(sf::VideoMode({1800, 1000}), "Giereczka");
-    Battle b(&Gracz, Act_Enemies, &window);
-
-
-    /*
-    //DO PRZEROBIENIA: UPDATE TEKSTUR:
-    for(auto &v : b.Return_Player()->Return_PlayerHand()){
-        v->update_texture();
-    }
-    for(auto &v : b.Return_Enemies()){
-        v.update_texture();
-    }
-    b.Return_Player()->Return_Character().update_texture();
-    */
+    Battle b(&Gracz, Act_Enemies, &window, &end, &e_counter);
 
     /*
     graphics_object_card MOJA_KARTA("Karcioszka", "1", "fajny tekst,\nno zajebisty nawet \nmozna wrappowac", ".resources/textures/cry.jpg", 20, 20);
@@ -100,6 +90,12 @@ int main(){
 
             //wrogowie:
             b.Render_Enemies();
+
+            //licznik energii:
+            b.Render_Energy_Counter();
+
+            //przycisk konca tury:
+            b.Render_End_Turn_Button();
 
             //highlightowanie kursorem:
             sf::Vector2i mousePosition = sf::Mouse::getPosition(window);

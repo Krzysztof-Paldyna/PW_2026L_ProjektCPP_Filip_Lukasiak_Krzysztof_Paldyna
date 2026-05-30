@@ -13,13 +13,10 @@ Battle::Battle(Player* pl, std::vector<Enemy> be, sf::RenderWindow *bw, graphics
 	card_font.loadFromFile("resources/fonts/Andale_Mono.ttf");
 	end_turn_button = end;
 	energy_counter = e_counter;
-	energy_counter->update_max_energy(player->Return_Max_Energy());
-	energy_counter->update_current_energy(player->Return_Current_Energy());
 }
 void Battle::PlayerTurn()
 {
 	end_turn_button->set_is_Player_Turn(true);
-	energy_counter->update_current_energy(player->Return_Current_Energy());
 	bool g = false;
 	int tt;
 	while (g == true)
@@ -133,6 +130,8 @@ void Battle::Render_End_Turn_Button()
 }
 
 void Battle::Render_Energy_Counter(){
+	energy_counter->update_current_energy(player->Return_Current_Energy());
+	energy_counter->update_max_energy(player->Return_Max_Energy());
 	energy_counter->draw(*battle_window, card_font);
 }
 
@@ -328,7 +327,6 @@ void Battle::CanPlayCardCheck()
 	if (player->Return_Current_Energy() >= player->Return_PlayerHand().at(g)->Return_Card_Cost())
 	{
 		player->PlayCard(g)->Card_Effect(this);
-		energy_counter->update_current_energy(player->Return_Current_Energy());
 	}
 	else
 	{
@@ -340,7 +338,6 @@ void Battle::CanPlayCardCheck2(Card *c, Enemy *e, int i)
 	if (player->Return_Current_Energy() >= c->Return_Card_Cost())
 	{
 		player->PlayCard(i)->Card_Effect(this);
-		energy_counter->update_current_energy(player->Return_Current_Energy());
 	}
 	else
 	{

@@ -72,10 +72,17 @@ void graphics_object_character::draw(sf::RenderWindow &window, sf::Font &font){/
     hp_bar_max.setOutlineColor(sf::Color(200, 200, 200));
     hp_bar_max.setOutlineThickness(2);
     window.draw(hp_bar_max);
-    hp_bar.setSize({dim_x * current_hp / float(max_hp), 12});
+    if(current_hp > 0){
+        if(current_hp > max_hp){
+        hp_bar_max.setSize({float(dim_x), 12});
+    }
+    else{
+        hp_bar.setSize({dim_x * current_hp / float(max_hp), 12});
+    }
     hp_bar.setPosition(x, y + dim_y + 4);
     hp_bar.setFillColor(sf::Color::Red);
     window.draw(hp_bar);
+    }
 }
 
 void graphics_object_character::update_texture(){

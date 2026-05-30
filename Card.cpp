@@ -160,7 +160,7 @@ AttackShieldCard::AttackShieldCard(std::string n, int e, int a, int c)
 	name = n;
 	cost = std::to_string(e);
 	text = "Ta Karta Atakuje za 2 dmg\ni daje 2 tarczy";
-	file_path = ".resources/textures/aaa.jpg";
+	file_path = "resources/textures/aaa.jpg";
 }
 Card* AttackShieldCard::clone()
 {

@@ -11,9 +11,10 @@ protected:
     sf::RectangleShape end_turn_button;  //przycisk końca tury
     bool is_Player_turn;    //wartość informująca czy jest tura gracza
 public:
-    graphics_object_end_turn(std::string name = "END TURN", std::string path = "None", uint dim_x = 120, uint dim_y = 40, uint x = 1460, uint y = 400); //konstruktor domyślny (POZYCJA PRZYCISKU USTAWIONA NA STAŁE)
+    graphics_object_end_turn(std::string name = "END TURN", std::string path = "None", uint dim_x = 120, uint dim_y = 40, uint x = 1650, uint y = 400); //konstruktor domyślny (POZYCJA PRZYCISKU USTAWIONA NA STAŁE)
     ~graphics_object_end_turn();  //destruktor
 
+    void set_is_Player_Turn(bool turn_state) {is_Player_turn = turn_state;}
     void draw(sf::RenderWindow &window, sf::Font &font) override; //przeciążana funkcja rysująca kartę w podanym oknie SMFL, z użyciem podanej czcionki
 };
 
