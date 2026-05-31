@@ -1,5 +1,5 @@
 #include "Enemy.h"
-
+#include "Battle.h"
 std::map<int, EnemyCreator> EnemyFactory::Registered_Enemies;
 //-------------------------------------------------------------CharacterBaseline-----------------------------------------------
 Character::Character()
@@ -114,6 +114,10 @@ Enemy::Enemy()
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
 }
+Enemy* Enemy::clone()
+{
+	return new Enemy(*this);
+}
 Enemy::Enemy(std::string n, int hp)
 {
 	Name = n;
@@ -126,7 +130,7 @@ Enemy::Enemy(std::string n, int hp)
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
 }
-void Enemy::EnemyBehaviour()
+void Enemy::EnemyBehaviour(Battle* battle)
 {
 	std::cout << "Buuuuu cos robie strasznego :3" << std::endl;
 }
@@ -159,13 +163,18 @@ BasicEnemy::BasicEnemy(std::string n, int hp)
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
 }
-void BasicEnemy::EnemyBehaviour()
+void BasicEnemy::EnemyBehaviour(Battle* battle)
 {
 	std::cout << "Buuuuu cos robie strasznego :3, ale jest Basic" << std::endl;
+	battle->Return_Player()->Return_Character().TakeDamage(2);
 }
 Enemy* BasicEnemy::kreator(std::string n, int hp)
 {
 	return new BasicEnemy(n, hp);
+}
+Enemy* BasicEnemy::clone()
+{
+	return new BasicEnemy(*this);
 }
 BasicEnemy::~BasicEnemy()
 {

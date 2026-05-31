@@ -77,11 +77,32 @@ void Player::Return_Discarded_Cards_to_Deck()
 }
 void Player::SetHand()
 {
-	for (int i = 0; i < Hand_Size; i++)
+	if (Hand_Size <= PlayerDeck.size())
 	{
-		int g = rand() % PlayerDeck.size();
-		HandCards.push_back(PlayerDeck.at(g));
-		PlayerDeck.erase(PlayerDeck.begin() + g);
+		for (int i = 0; i < Hand_Size; i++)
+		{
+			int g;
+			if(PlayerDeck.size() > 0)
+			{
+				g = rand() % PlayerDeck.size();
+				HandCards.push_back(PlayerDeck.at(g));
+				PlayerDeck.erase(PlayerDeck.begin() + g);
+			}
+			else
+			{
+				g = 0;
+				HandCards.push_back(PlayerDeck.at(g));
+				PlayerDeck.erase(PlayerDeck.begin() + g);
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i <= PlayerDeck.size(); i++)
+		{
+			HandCards.push_back(PlayerDeck.at(0));
+			PlayerDeck.erase(PlayerDeck.begin());
+		}
 	}
 }
 void Player::Give_Card_to_Hand(int g)
@@ -91,9 +112,31 @@ void Player::Give_Card_to_Hand(int g)
 }
 void Player::Give_Random_Card_to_Hand()
 {
-	int g = rand() % PlayerDeck.size();
-	HandCards.push_back(PlayerDeck.at(g));
-	PlayerDeck.erase(PlayerDeck.begin() + g);
+	if(PlayerDeck.size() == 0 && DiscardDeck.size() == 0)
+	{
+		std::cout<<"Tak nie powinno byc, jak to zrobiles ze masz tak malo kart xpp?"<<std::endl;
+	}
+	else
+	{
+		if(PlayerDeck.size() == 0)
+		{
+			Return_Discarded_Cards_to_Deck();
+		}
+		int g;
+		if(PlayerDeck.size() > 0)
+		{
+			g = rand() % PlayerDeck.size();
+			HandCards.push_back(PlayerDeck.at(g));
+			PlayerDeck.erase(PlayerDeck.begin() + g);
+			
+		}
+		else
+		{
+			g = 0;
+			HandCards.push_back(PlayerDeck.at(g));
+			PlayerDeck.erase(PlayerDeck.begin() + g);
+		}
+	}
 }
 void Player::RerollHand()
 {

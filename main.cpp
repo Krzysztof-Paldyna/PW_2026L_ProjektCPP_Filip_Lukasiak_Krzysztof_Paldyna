@@ -25,8 +25,8 @@ int main(){
 	EnemyFactory::regist(1, &BasicEnemy::kreator);
 
 	Enemy* BasicEnemy = EnemyFactory::create(1, "BasicEnemy", 25);
-	std::vector<Enemy> Act_Enemies;
-	Act_Enemies.push_back(*BasicEnemy);
+	std::vector<Enemy*> Act_Enemies;
+	Act_Enemies.push_back(BasicEnemy);
 	//-------------------------------------
 
 	PlayerCharacter g("Pimpek", 20);
@@ -34,13 +34,6 @@ int main(){
 	//-------------------------------------
 	Player Gracz;
 	Gracz.Add_Card(BasicAttack);
-	Gracz.Add_Card(BasicAttack);
-	Gracz.Add_Card(BasicAttack);
-	Gracz.Add_Card(BasicShield);
-	Gracz.Add_Card(BasicShield);
-	Gracz.Add_Card(BasicShield);
-	Gracz.Add_Card(BasicAttackShield);
-	Gracz.Add_Card(BasicAttackShield);
     Gracz.Add_Card(DrawCard);
 	Gracz.Set_Character(g);
 	//-------------------------------------
@@ -73,6 +66,15 @@ int main(){
                 if(event.type == sf::Event::Closed){
                     window.close();
                 }
+                if (event.type == sf::Event::MouseButtonPressed) 
+                {
+                    if (event.mouseButton.button == sf::Mouse::Left) 
+                    {
+                        int x = event.mouseButton.x;
+                        int y = event.mouseButton.y;
+                        b.Handle_Mouse_Click(x, y);
+                    }
+                }
             }
 
             // clear the window with white color
@@ -100,19 +102,8 @@ int main(){
             //highlightowanie kursorem:
             sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 
-            if (event.type == sf::Event::MouseButtonPressed) 
-            {
-                if (event.mouseButton.button == sf::Mouse::Left) 
-                {
-                    int x = event.mouseButton.x;
-                    int y = event.mouseButton.y;
-                    b.Handle_Mouse_Click(x, y);
-                    for(auto &v : b.Return_Enemies())
-                    {
-                        v.update_texture();
-                    }   
-                }
-            }
+            
+            b.EnemyAction();
             // end the current frame
             window.display();
         }

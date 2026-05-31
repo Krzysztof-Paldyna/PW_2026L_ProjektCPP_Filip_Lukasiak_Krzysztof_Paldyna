@@ -15,12 +15,19 @@ class Card;
 #include <chrono>
 #include <thread>
 
+enum class BattleState
+{
+	Player_turn,
+	Enemy_turn
+};
+
 class Battle
 {
 protected:
 	int TurnCounter = 0;
+	BattleState currentState = BattleState::Player_turn;
 	Player *player;
-	std::vector<Enemy> Battle_Enemies;
+	std::vector<Enemy*> Battle_Enemies;
 	sf::RenderWindow *battle_window;
 	sf::Font card_font;
 	Card *Selected_Card = nullptr;
@@ -31,10 +38,10 @@ protected:
 	
 public:
 	Battle();
-	Battle(Player *pl, std::vector<Enemy> be, sf::RenderWindow *bw, graphics_object_end_turn *end, graphics_object_energy_counter *e_counter);
+	Battle(Player *pl, std::vector<Enemy*> be, sf::RenderWindow *bw, graphics_object_end_turn *end, graphics_object_energy_counter *e_counter);
 	
 	Player* Return_Player();
-	std::vector<Enemy>& Return_Enemies();
+	std::vector<Enemy*>& Return_Enemies();
 
 	void Render_Cards();
 	void Render_Player();

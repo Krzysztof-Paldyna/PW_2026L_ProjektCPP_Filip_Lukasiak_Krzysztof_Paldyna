@@ -4,7 +4,7 @@ Battle::Battle()
 {
 	player = new Player;
 }
-Battle::Battle(Player* pl, std::vector<Enemy> be, sf::RenderWindow *bw, graphics_object_end_turn *end, graphics_object_energy_counter *e_counter)
+Battle::Battle(Player* pl, std::vector<Enemy*> be, sf::RenderWindow *bw, graphics_object_end_turn *end, graphics_object_energy_counter *e_counter)
 {
 	player = pl;
 	Battle_Enemies = be;
@@ -16,7 +16,7 @@ Battle::Battle(Player* pl, std::vector<Enemy> be, sf::RenderWindow *bw, graphics
 }
 void Battle::PlayerTurn()
 {
-	end_turn_button->set_is_Player_Turn(true);
+	/*
 	bool g = false;
 	int tt;
 	while (g == true)
@@ -86,6 +86,7 @@ void Battle::PlayerTurn()
 		}
 		}
 	}
+		*/
 }
 void Battle::EndPlayerTurn()
 {
@@ -93,7 +94,20 @@ void Battle::EndPlayerTurn()
 	player->RerollHand();
 	end_turn_button->set_highlight_state(highlight::none);
 	end_turn_button->set_is_Player_Turn(false);
-	EnemyAction();
+	currentState = BattleState::Enemy_turn;
+}
+void Battle::EnemyAction()
+{
+	if (currentState == BattleState::Enemy_turn)
+    {
+		for (int i = 0; i < Battle_Enemies.size(); i++)
+		{
+			Battle_Enemies.at(i)->EnemyBehaviour(this);
+		}
+		TurnCounter += 1;
+		end_turn_button->set_is_Player_Turn(true);
+		currentState = BattleState::Player_turn;
+	}
 }
 void Battle::Render_Cards()
 {
@@ -117,9 +131,9 @@ void Battle::Render_Enemies()
 {
 	for(int i = 0; i < Battle_Enemies.size(); ++i)
 	{
-        Battle_Enemies.at(i).set_position(int(battle_window->getSize().x / 2 * (1 + 1/((Battle_Enemies.size() + 1) * (i + 1))) + Battle_Enemies.at(i).get_dim_x()), int(battle_window->getSize().y / 4));
-        Battle_Enemies.at(i).draw(*battle_window, card_font);
-		Battle_Enemies.at(i).update_texture();
+        Battle_Enemies.at(i)->set_position(int(battle_window->getSize().x / 2 * (1 + 1/((Battle_Enemies.size() + 1) * (i + 1))) + Battle_Enemies.at(i)->get_dim_x()), int(battle_window->getSize().y / 4));
+        Battle_Enemies.at(i)->draw(*battle_window, card_font);
+		Battle_Enemies.at(i)->update_texture();
     }
 }
 
@@ -169,7 +183,6 @@ void Battle::Select_Card(int mx, int my)
 }
 void Battle::Handle_Mouse_Click(int mx, int my)
 {
-    if (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) return;
 
     bool kliknieto_karte = false;
     bool kliknieto_wroga = false;
@@ -216,14 +229,14 @@ void Battle::Handle_Mouse_Click(int mx, int my)
     {
         for(int i = 0; i < Battle_Enemies.size(); i++)
         {
-            int x = Battle_Enemies.at(i).get_x();
-            int y = Battle_Enemies.at(i).get_y();
-            int dim_x = Battle_Enemies.at(i).get_dim_x();
-            int dim_y = Battle_Enemies.at(i).get_dim_y();
+            int x = Battle_Enemies.at(i)->get_x();
+            int y = Battle_Enemies.at(i)->get_y();
+            int dim_x = Battle_Enemies.at(i)->get_dim_x();
+            int dim_y = Battle_Enemies.at(i)->get_dim_y();
 
             if(mx >= x && mx <= x + dim_x && my >= y && my <= y + dim_y)
             {
-                Selected_Enemy = &Battle_Enemies.at(i);
+                Selected_Enemy = Battle_Enemies.at(i);
                 Selected_Enemy->set_highlight_state(highlight::positive);
                 kliknieto_wroga = true;
 
@@ -262,16 +275,16 @@ void Battle::Select_Enemy(int mx, int my)
 {
 	for(int i = 0; i < Battle_Enemies.size(); i++)
 	{
-        int x = Battle_Enemies.at(i).get_x();
-        int y = Battle_Enemies.at(i).get_y();
-        int dim_x = Battle_Enemies.at(i).get_dim_x();
-        int dim_y = Battle_Enemies.at(i).get_dim_y();
+        int x = Battle_Enemies.at(i)->get_x();
+        int y = Battle_Enemies.at(i)->get_y();
+        int dim_x = Battle_Enemies.at(i)->get_dim_x();
+        int dim_y = Battle_Enemies.at(i)->get_dim_y();
         if(mx >= x && mx <= x + dim_x && my >= y && my <= y + dim_y)
 		{
             if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
-                Battle_Enemies.at(i).set_highlight_state(highlight::positive);
-				Selected_Enemy = &Battle_Enemies.at(i);
+                Battle_Enemies.at(i)->set_highlight_state(highlight::positive);
+				Selected_Enemy = Battle_Enemies.at(i);
 				if(Selected_Card != nullptr)
 				{
 					CanPlayCardCheck2(Selected_Card, Selected_Enemy, Selected_Card_Index);
@@ -283,28 +296,20 @@ void Battle::Select_Enemy(int mx, int my)
 		{
             if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
-                Battle_Enemies.at(i).set_highlight_state(highlight::none);
+                Battle_Enemies.at(i)->set_highlight_state(highlight::none);
 				Selected_Enemy = nullptr;
 
             }
         }
     }
 }
-void Battle::EnemyAction()
-{
-	for (int i = 0; i < Battle_Enemies.size(); i++)
-	{
-		Battle_Enemies.at(i).EnemyBehaviour();
-	}
-	TurnCounter += 1;
-	PlayerTurn();
-}
+
 void Battle::EndBattleCheck()
 {
 	bool End = true;
 	for(int i = 0; i < Battle_Enemies.size(); i++)
 	{
-		if(Battle_Enemies.at(i).Return_isDead() == false)
+		if(Battle_Enemies.at(i)->Return_isDead() == false)
 		{
 			End = false;
 		}
@@ -314,7 +319,7 @@ void Battle::EndBattleCheck()
 		std::cout<<" KONIEC "<<std::endl;
 	}
 }
-std::vector<Enemy>& Battle::Return_Enemies()
+std::vector<Enemy*>& Battle::Return_Enemies()
 {
 	return Battle_Enemies;
 }

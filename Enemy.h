@@ -7,6 +7,8 @@
 #include <map>
 #include "graphics_object_character.hpp"
 
+class Battle;
+
 enum ElementType
 {
 	None= 0,
@@ -61,9 +63,10 @@ protected:
 public:
 	Enemy();
 	Enemy(std::string n, int hp);
+	virtual Enemy* clone();
 	virtual ~Enemy();
 
-	virtual void EnemyBehaviour();
+	virtual void EnemyBehaviour(Battle* battle);
 };
 typedef Enemy* (*EnemyCreator) (std::string n, int hp);
 
@@ -73,8 +76,9 @@ public:
 	BasicEnemy();
 	BasicEnemy(std::string n, int hp);
 	static Enemy* kreator(std::string n, int hp);
+	virtual Enemy* clone();
 	virtual ~BasicEnemy();
-	virtual void EnemyBehaviour();
+	virtual void EnemyBehaviour(Battle* battle);
 };
 
 class EnemyFactory
