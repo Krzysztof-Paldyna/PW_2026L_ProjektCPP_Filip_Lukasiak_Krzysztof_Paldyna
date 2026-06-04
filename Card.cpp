@@ -228,3 +228,11 @@ Card* CardFactory::create(const int& id, std::string n, int e)
 {
 	return Registered_Cards[id](n, e);
 }
+void CardFactory::Initialize()
+{
+	if (!Registered_Cards.empty()) return;
+	regist(1, &AttackCard::kreator);
+    regist(2, &ShieldCard::kreator);
+    regist(3, &AttackShieldCard::kreator);
+    regist(4, &DrawCard::kreator);
+}

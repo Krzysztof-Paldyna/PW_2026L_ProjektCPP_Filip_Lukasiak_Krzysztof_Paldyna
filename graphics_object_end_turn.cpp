@@ -1,6 +1,6 @@
 #include"graphics_object_end_turn.hpp"
 
-graphics_object_end_turn::graphics_object_end_turn(std::string name, std::string path, uint dim_x, uint dim_y, uint x, uint y) : graphics_object(name, file_path, dim_x, dim_y, x, y){//konstruktor domyślny (POZYCJA PRZYCISKU USTAWIONA NA STAŁE)
+graphics_object_end_turn::graphics_object_end_turn(std::string name, std::string path, uint dim_x, uint dim_y, uint x, uint y) : graphics_object(name, path, dim_x, dim_y, x, y){//konstruktor domyślny (POZYCJA PRZYCISKU USTAWIONA NA STAŁE)
     end_turn_button.setPosition(x, y);
     end_turn_button.setSize({float(dim_x), float(dim_y)});
     end_turn_button.setFillColor(sf::Color(128, 100, 0));
@@ -40,7 +40,6 @@ void graphics_object_end_turn::draw(sf::RenderWindow &window, sf::Font &font){//
     sf::Text text;
     text.setFont(font);
     text.setString(name);
-    text.Bold;
     text.setCharacterSize(20);
     text.setFillColor(sf::Color::Black);
     text.setOutlineColor(sf::Color::White);

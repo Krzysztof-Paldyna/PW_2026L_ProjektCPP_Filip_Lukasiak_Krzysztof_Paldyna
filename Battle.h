@@ -5,6 +5,7 @@
 #include "Card.h"
 #include "graphics_object_end_turn.hpp"
 #include "graphics_object_energy_counter.hpp"
+#include "graphics_object_deck_info.hpp"
 class Player;
 class Enemy;
 class Card;
@@ -35,10 +36,11 @@ protected:
 	Enemy *Selected_Enemy = nullptr;
 	graphics_object_end_turn *end_turn_button = nullptr;
 	graphics_object_energy_counter *energy_counter = nullptr;
+	graphics_object_deck_info *deck_amount_info = nullptr;
 	
 public:
 	Battle();
-	Battle(Player *pl, std::vector<Enemy*> be, sf::RenderWindow *bw, graphics_object_end_turn *end, graphics_object_energy_counter *e_counter);
+	Battle(Player *pl, std::vector<Enemy*> be, sf::RenderWindow *bw, graphics_object_end_turn *end, graphics_object_energy_counter *e_counter, graphics_object_deck_info *d_info);
 	
 	Player* Return_Player();
 	std::vector<Enemy*>& Return_Enemies();
@@ -47,6 +49,7 @@ public:
 	void Render_Player();
 	void Render_Enemies();
 	void Render_End_Turn_Button();
+	void Render_Card_Info_Piles();
 	void Render_Energy_Counter();
 	void Select_Card(int mx, int my);
 	void Select_Enemy(int mx, int my);

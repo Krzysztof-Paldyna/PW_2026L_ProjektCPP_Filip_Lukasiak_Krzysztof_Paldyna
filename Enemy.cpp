@@ -87,6 +87,7 @@ PlayerCharacter::PlayerCharacter()
 }
 PlayerCharacter::PlayerCharacter(std::string n, int hp)
 {
+	std::cout << "[DEBUG] Start konstruktora PlayerCharacter: " << name << std::endl;
 	Name = n;
 	MaxHP = hp;
 	CurrentHp = MaxHP;
@@ -96,6 +97,33 @@ PlayerCharacter::PlayerCharacter(std::string n, int hp)
 	file_path = "resources/textures/PlayerCharacter.png";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
+	std::cout << "[DEBUG] Koniec konstruktora PlayerCharacter: " << name << std::endl;
+}
+std::string PlayerCharacter::Return_Player_Character_Description()
+{
+	return Charater_Description;
+}
+PlayerCharacter& PlayerCharacter::operator=(const PlayerCharacter& other)
+{
+	Name = other.Name;
+	MaxHP = other.MaxHP;
+	CurrentHp = MaxHP;
+	CharacterType = other.CharacterType;
+	//zmienne klasy graphics_object_character:
+	name = other.Name;
+	file_path = other.file_path;
+	max_hp = other.MaxHP;
+	current_hp = other.CurrentHp;
+	Charater_Description = other.Charater_Description;
+	return *this;
+}
+void PlayerCharacter::Set_Character_Description(std::string desc)
+{
+	Charater_Description = desc;
+}
+void PlayerCharacter::Set_Character_File_Path(std::string p)
+{
+	file_path = p;
 }
 PlayerCharacter::~PlayerCharacter()
 {
@@ -188,4 +216,10 @@ void EnemyFactory::regist(const int& id, EnemyCreator k)
 Enemy* EnemyFactory::create(const int& id, std::string n, int hp)
 {
 	return Registered_Enemies[id](n, hp);
+}
+void EnemyFactory::Initialize()
+{
+	if (!Registered_Enemies.empty()) return;
+
+	EnemyFactory::regist(1, &BasicEnemy::kreator);
 }

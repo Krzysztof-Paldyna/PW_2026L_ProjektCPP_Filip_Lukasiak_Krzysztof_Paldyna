@@ -28,7 +28,6 @@ void graphics_object_energy_counter::draw(sf::RenderWindow &window, sf::Font &fo
     sf::Text text;
     text.setFont(font);
     text.setString(std::to_string(current_energy) + "/" + std::to_string(max_energy));
-    text.Bold;
     text.setCharacterSize(30);
     text.setFillColor(sf::Color::Black);
     text.setOutlineColor(sf::Color::White);

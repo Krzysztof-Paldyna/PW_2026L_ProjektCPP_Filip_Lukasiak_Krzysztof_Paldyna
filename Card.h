@@ -106,6 +106,7 @@ class CardFactory
 private:
 	static std::map<int, CardCreator> Registered_Cards;
 public:
+	static void Initialize(); 
 	static void regist(const int& id, CardCreator k);
 	static Card* create(const int& id, std::string n, int e);
 };

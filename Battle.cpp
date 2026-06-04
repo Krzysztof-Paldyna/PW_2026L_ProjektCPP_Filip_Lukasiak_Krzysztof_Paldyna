@@ -4,7 +4,7 @@ Battle::Battle()
 {
 	player = new Player;
 }
-Battle::Battle(Player* pl, std::vector<Enemy*> be, sf::RenderWindow *bw, graphics_object_end_turn *end, graphics_object_energy_counter *e_counter)
+Battle::Battle(Player* pl, std::vector<Enemy*> be, sf::RenderWindow *bw, graphics_object_end_turn *end, graphics_object_energy_counter *e_counter, graphics_object_deck_info *d_info)
 {
 	player = pl;
 	Battle_Enemies = be;
@@ -13,6 +13,7 @@ Battle::Battle(Player* pl, std::vector<Enemy*> be, sf::RenderWindow *bw, graphic
 	card_font.loadFromFile("resources/fonts/Andale_Mono.ttf");
 	end_turn_button = end;
 	energy_counter = e_counter;
+	deck_amount_info = d_info;
 }
 void Battle::PlayerTurn()
 {
@@ -149,6 +150,12 @@ void Battle::Render_Energy_Counter(){
 	energy_counter->draw(*battle_window, card_font);
 }
 
+void Battle::Render_Card_Info_Piles()
+{
+	deck_amount_info->update_discard_info(player->Return_DiscardDeck().size());
+	deck_amount_info->update_draw_info(player->Return_PlayerDeck().size());
+	deck_amount_info->draw(*battle_window, card_font);
+}
 
 void Battle::Select_Card(int mx, int my)
 {

@@ -2,9 +2,11 @@
 
 Player::Player()
 {
+	std::cout << "[DEBUG] Start konstruktora Player" << std::endl;
 	Max_Energy = 3;
 	Current_Energy = Max_Energy;
 	Hand_Size = 4;
+	std::cout << "[DEBUG] koniec konstruktora Player" << std::endl;
 }
 Player::~Player()
 {
@@ -28,6 +30,10 @@ std::vector<Card*> &Player::Return_PlayerDeck()
 std::vector<Card*> &Player::Return_PlayerHand()
 {
 	return HandCards;
+}
+std::vector<Card*> &Player::Return_DiscardDeck()
+{
+	return DiscardDeck;
 }
 void Player::All_Cards()
 {
@@ -77,7 +83,7 @@ void Player::Return_Discarded_Cards_to_Deck()
 }
 void Player::SetHand()
 {
-	if (Hand_Size <= PlayerDeck.size())
+	if (Hand_Size <= PlayerDeck.size() && !PlayerDeck.empty())
 	{
 		for (int i = 0; i < Hand_Size; i++)
 		{

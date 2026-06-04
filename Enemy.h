@@ -50,9 +50,14 @@ public:
 class PlayerCharacter : public Character
 {
 private:
+	std::string Charater_Description;
 public:
 	PlayerCharacter();
 	PlayerCharacter(std::string n, int hp);
+	void Set_Character_Description(std::string desc);
+	void Set_Character_File_Path(std::string p);
+	std::string Return_Player_Character_Description();
+	PlayerCharacter& operator=(const PlayerCharacter& other);
 	~PlayerCharacter();
 };
 
@@ -86,6 +91,7 @@ class EnemyFactory
 private:
 	static std::map<int, EnemyCreator> Registered_Enemies;
 public:
+	static void Initialize(); 
 	static void regist(const int& id, EnemyCreator k);
 	static Enemy* create(const int& id, std::string n, int hp);
 };

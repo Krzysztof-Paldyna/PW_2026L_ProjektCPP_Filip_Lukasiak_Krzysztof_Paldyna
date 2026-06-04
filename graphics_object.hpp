@@ -24,8 +24,8 @@ protected:
     std::string file_path;  //przechowuje ścieżkę do pliku graficznego wyświetlanego przez obiekt
     const uint dim_x;   //wymiar x obiektu
     const uint dim_y;   //wymiar y obiektu
-    uint x; //pozycja x obiektu (górnego lewego rogu)
-    uint y; //pozycja y obiektu (górnego lewego rogu)
+    uint x = 0; //pozycja x obiektu (górnego lewego rogu)
+    uint y = 0; //pozycja y obiektu (górnego lewego rogu)
     highlight is_highlighted;   //określa czy obiekt ma być renderowany z podświetleniem
 
 public:
