@@ -12,6 +12,7 @@ Card::Card(std::string n, int e)
 	name = n;
 	cost = std::to_string(e);
 	file_path = "None";
+	update_texture();
 }
 Card::Card()
 {
@@ -66,18 +67,19 @@ AttackCard::AttackCard()
 	Attack = 1;
 	CardType = None;
 }
-AttackCard::AttackCard(std::string n, int e, int a)
+AttackCard::AttackCard(std::string n, int e)
 {
 	Nazwa = n;
 	Energy = e;
-	Attack = a;
+	Attack = 6;
 	Card_class = Attack_Card;
 	CardType = None;
 	//elementy graficzne:
 	name = n;
 	cost = std::to_string(e);
-	text = "Ta Karta Atakuje za 5 dmg";
+	text = "Ta Karta Atakuje za 6 dmg";
 	file_path = "resources/textures/BasicAttack.png";
+	update_texture();
 }
 Card* AttackCard::clone() 
 {
@@ -86,13 +88,13 @@ Card* AttackCard::clone()
 void AttackCard::Card_Effect(Battle* b)
 {
 	b->Return_Player()->Reduce_Energy(Energy);
+	b->Return_Selected_Enemy()->TakeDamage(Attack);
 	std::cout << "Efect Karty Ataku!!! Zadaje " << Attack << " Obrazen " <<b->Return_Selected_Enemy()->Return_Name() << std::endl;
 	std::cout<< "Ma aktualnie "<< b->Return_Selected_Enemy()->Return_CurrentHP()<<std::endl;
-	b->Return_Selected_Enemy()->TakeDamage(Attack);
 }
 Card* AttackCard:: kreator(std::string n, int e)
 {
-	return new AttackCard(n, e, 3);
+	return new AttackCard(n, e);
 }
 AttackCard::~AttackCard()
 {
@@ -120,6 +122,7 @@ ShieldCard::ShieldCard(std::string n, int e)
 	cost = std::to_string(e);
 	text = "Ta Karta daje 5 Tarczy";
 	file_path = "None";
+	update_texture();
 }
 Card* ShieldCard::clone() 
 {
@@ -128,9 +131,9 @@ Card* ShieldCard::clone()
 void ShieldCard::Card_Effect(Battle* b)
 {
 	b->Return_Player()->Reduce_Energy(Energy);
-	std::cout << "Efect Karty Ataku!!! Zadaje " << Shield << " Obrazen " <<b->Return_Selected_Enemy()->Return_Name() << std::endl;
-	std::cout<< "Ma aktualnie "<< b->Return_Selected_Enemy()->Return_CurrentHP()<<std::endl;
-	b->Return_Selected_Enemy()->TakeDamage(Shield);
+	b->Return_Player()->Return_Character().Add_Shield(Shield);
+	std::cout << "Efect Karty Tarczy!!! Dodaje " << Shield << " Punktów tarczy " << std::endl;
+	std::cout<< "Ma aktualnie "<< b->Return_Player()->Return_Character().Return_Shield() <<std::endl;
 }
 Card* ShieldCard::kreator(std::string n, int e)
 {
@@ -149,18 +152,19 @@ AttackShieldCard::AttackShieldCard()
 	Attack = 1;
 	CardType = None;
 }
-AttackShieldCard::AttackShieldCard(std::string n, int e, int a, int c)
+AttackShieldCard::AttackShieldCard(std::string n, int e)
 {
 	Nazwa = n;
 	Energy = e;
-	Attack = a;
-	Shield = c;
+	Attack = 4;
+	Shield = 2;
 	Card_class = Attack_Card;
 	//elementy graficzne:
 	name = n;
 	cost = std::to_string(e);
-	text = "Ta Karta Atakuje za 2 dmg\ni daje 2 tarczy";
+	text = "Ta Karta Atakuje za 4 dmg\ni daje 2 tarczy";
 	file_path = "resources/textures/aaa.jpg";
+	update_texture();
 }
 Card* AttackShieldCard::clone()
 {
@@ -169,13 +173,14 @@ Card* AttackShieldCard::clone()
 void AttackShieldCard::Card_Effect(Battle* b)
 {
 	b->Return_Player()->Reduce_Energy(Energy);
+	b->Return_Selected_Enemy()->TakeDamage(Attack);
+	b->Return_Player()->Return_Character().Add_Shield(Shield);
 	std::cout << "Efect Karty Ataku!!! Zadaje " << Attack << " Obrazen " <<b->Return_Selected_Enemy()->Return_Name() << std::endl;
 	std::cout<< "Ma aktualnie "<< b->Return_Selected_Enemy()->Return_CurrentHP()<<std::endl;
-	b->Return_Selected_Enemy()->TakeDamage(Attack);
 }
 Card* AttackShieldCard::kreator(std::string n, int e)
 {
-	return new AttackShieldCard(n, e, 2, 2);
+	return new AttackShieldCard(n, e);
 }
 AttackShieldCard::~AttackShieldCard()
 {
@@ -200,6 +205,7 @@ DrawCard::DrawCard(std::string n, int e)
 	cost = std::to_string(e);
 	text = "Dobierz dwie karty";
 	file_path = "None";
+	update_texture();
 }
 Card* DrawCard::clone() 
 {
@@ -208,8 +214,9 @@ Card* DrawCard::clone()
 void DrawCard::Card_Effect(Battle* b)
 {
 	b->Return_Player()->Reduce_Energy(Energy);
-	b->Return_Player()->Give_Random_Card_to_Hand();
-	b->Return_Player()->Give_Random_Card_to_Hand();
+	for(int i = 0; i < 2; ++i){
+		b->Return_Player()->Draw_Card();
+	}
 }
 Card* DrawCard::kreator(std::string n, int e)
 {

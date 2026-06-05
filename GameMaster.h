@@ -42,6 +42,7 @@ public:
 
     void Start_New_Battle();
     void Update_Battle_Frame(int mx, int my, bool isClicked); 
+    void Handle_Mouse_Click();
     ~GameMaster();
 };
 #endif

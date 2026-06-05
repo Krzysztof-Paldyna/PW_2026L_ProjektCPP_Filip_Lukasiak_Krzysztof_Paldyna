@@ -99,15 +99,18 @@ void Battle::EndPlayerTurn()
 }
 void Battle::EnemyAction()
 {
-	if (currentState == BattleState::Enemy_turn)
-    {
-		for (int i = 0; i < Battle_Enemies.size(); i++)
+	if(currentState == BattleState::Enemy_turn){
+		//akcje przeciwników
+		for(auto &v : Battle_Enemies)
 		{
-			Battle_Enemies.at(i)->EnemyBehaviour(this);
+			v->EnemyBehaviour(this);
 		}
 		TurnCounter += 1;
-		end_turn_button->set_is_Player_Turn(true);
+
+		//akcje na początku tury gracza:
 		currentState = BattleState::Player_turn;
+		end_turn_button->set_is_Player_Turn(true);
+		player->Return_Character().Add_Shield(-1 * player->Return_Character().Return_Shield());
 	}
 }
 void Battle::Render_Cards()
@@ -118,26 +121,29 @@ void Battle::Render_Cards()
         auto card = player->Return_PlayerHand().at(i);
         card->set_position(int((battle_window->getSize().x / (cards_on_hand + 1) * (i + 1) - card->get_dim_x()/2)), int(battle_window->getSize().y - card->get_dim_y() - 10));
         card->draw(*battle_window, card_font);
-		card->update_texture();
     }
 }
 void Battle::Render_Player()
 {
+	//update wartości graficznych
+	player->Return_Character().set_hp(player->Return_Character().Return_CurrentHP());
+	player->Return_Character().set_shield(player->Return_Character().Return_Shield());
 	//rysowanie postaci gracza
     player->Return_Character().set_position(int(battle_window->getSize().x / 6 - player->Return_Character().get_dim_x()/2), int (battle_window->getSize().y / 4));
     player->Return_Character().draw(*battle_window, card_font);
-	player->Return_Character().update_texture();
 }
 void Battle::Render_Enemies()
 {
 	for(int i = 0; i < Battle_Enemies.size(); ++i)
 	{
+		//update wartości graficznych
+		Battle_Enemies.at(i)->set_hp(Battle_Enemies.at(i)->Return_CurrentHP());
+		Battle_Enemies.at(i)->set_shield(Battle_Enemies.at(i)->Return_Shield());
+		//rysowanie wrogów w odpowiednich pozycjach
         Battle_Enemies.at(i)->set_position(int(battle_window->getSize().x / 2 * (1 + 1/((Battle_Enemies.size() + 1) * (i + 1))) + Battle_Enemies.at(i)->get_dim_x()), int(battle_window->getSize().y / 4));
         Battle_Enemies.at(i)->draw(*battle_window, card_font);
-		Battle_Enemies.at(i)->update_texture();
     }
 }
-
 
 void Battle::Render_End_Turn_Button()
 {
@@ -190,19 +196,14 @@ void Battle::Select_Card(int mx, int my)
 }
 void Battle::Handle_Mouse_Click(int mx, int my)
 {
-
     bool kliknieto_karte = false;
     bool kliknieto_wroga = false;
 	bool kliknieto_end = false;
 
-	int x = end_turn_button->get_x();
-	int y = end_turn_button->get_y();
-	int dim_x = end_turn_button->get_dim_x();
-	int dim_y = end_turn_button->get_dim_y();
-	if(mx >= x && mx <= x + dim_x && my >= y && my <= y + dim_y){
+	if(mx >= end_turn_button->get_x() && mx <= end_turn_button->get_x() + end_turn_button->get_dim_x() && my >= end_turn_button->get_y() && my <= end_turn_button->get_y() + end_turn_button->get_dim_y()){
 		kliknieto_end = true;
-		end_turn_button->set_highlight_state(highlight::positive);
 		EndPlayerTurn();
+		return;
 	}
 
     if(!kliknieto_end){
@@ -216,11 +217,9 @@ void Battle::Handle_Mouse_Click(int mx, int my)
 
 			if(mx >= x && mx <= x + dim_x && my >= y && my <= y + dim_y)
 			{
-
 				if(Selected_Card != nullptr) {
 					Selected_Card->set_highlight_state(highlight::none);
 				}
-
 
 				sprawdzana_karta->set_highlight_state(highlight::positive);
 				Selected_Card = sprawdzana_karta;

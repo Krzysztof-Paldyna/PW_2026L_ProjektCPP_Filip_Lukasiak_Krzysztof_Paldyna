@@ -36,12 +36,12 @@ public:
 	Card* PlayCard(int g);
 	void Discard_Card_From_Hand(int g);
 	void Discard_Card_From_Deck(int g);
-	void Return_Discarded_Cards_to_Deck();
+	void Return_Discarded_Cards_to_Deck();	//zwraca wszystkie karty z talii odrzuconych do talii dobieranych i je przetasowuje
 	void RerollHand();
 
 	void SetHand();
 	void Give_Card_to_Hand(int g);
-	void Give_Random_Card_to_Hand();
+	void Draw_Card();
 
 	int Return_Max_Energy();
 	int Return_Current_Energy();

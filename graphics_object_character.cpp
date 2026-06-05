@@ -26,6 +26,10 @@ void graphics_object_character::set_hp(int new_hp){
     current_hp = new_hp;
 }
 
+void graphics_object_character::set_shield(int new_shield){
+    current_shield = new_shield;
+}
+
 void graphics_object_character::draw(sf::RenderWindow &window, sf::Font &font){//przeciążana funkcja rysująca kartę w podanym oknie SMFL, z użyciem podanej czcionki
     
     switch(is_highlighted){
@@ -83,6 +87,31 @@ void graphics_object_character::draw(sf::RenderWindow &window, sf::Font &font){/
     hp_bar.setFillColor(sf::Color::Red);
     window.draw(hp_bar);
     }
+
+    //rysowanie punktów tarczy:
+    if(current_shield > 0){
+        float s = 10;  //modyfikuje skalę ikony
+        sf::ConvexShape shield_icon;
+        shield_icon.setPointCount(5);
+        shield_icon.setPoint(0, {0, 0});
+        shield_icon.setPoint(1, {4*s, 0});
+        shield_icon.setPoint(2, {4*s, 3*s});
+        shield_icon.setPoint(3, {2*s, 5*s});
+        shield_icon.setPoint(4, {0, 3*s});
+        shield_icon.setFillColor(sf::Color(200, 200, 200));
+        shield_icon.setOutlineColor(sf::Color(100, 100, 100));
+        shield_icon.setOutlineThickness(2);
+        shield_icon.setPosition({float(x - shield_icon.getGlobalBounds().width - 2), float(y + dim_y - shield_icon.getGlobalBounds().height/2)});
+        window.draw(shield_icon);
+
+        sf::Text shield_val;
+        shield_val.setFont(font);
+        shield_val.setString(std::to_string(current_shield));
+        shield_val.setCharacterSize(s * 3);
+        shield_val.setFillColor(sf::Color::Black);
+        shield_val.setPosition(shield_icon.getPosition().x + 2*s - shield_val.getLocalBounds().width/1.6, shield_icon.getPosition().y);
+        window.draw(shield_val);
+    }
 }
 
 void graphics_object_character::update_texture(){
@@ -90,7 +119,5 @@ void graphics_object_character::update_texture(){
         character_texture.loadFromFile(file_path, sf::IntRect({0, 0}, {int(dim_x), int(dim_y)}));  //ładujemy teksturę (pierwsza para argumentów pokazuje start tekstury, druga wycinany rozmiar)
         character_image.setTexture(character_texture);
         hp_bar.setSize({dim_x * current_hp / float(max_hp), 12});
-        
     }
-    
 }

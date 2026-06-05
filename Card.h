@@ -49,7 +49,7 @@ protected:
 	int Attack = 1;
 public:
 	AttackCard();
-	AttackCard(std::string n, int e, int a);
+	AttackCard(std::string n, int e);
 	virtual Card* clone();
 	virtual void Card_Effect(Battle* b);
 	virtual ~AttackCard();
@@ -79,7 +79,7 @@ protected:
 	int Shield = 1;
 public:
 	AttackShieldCard();
-	AttackShieldCard(std::string n, int e, int a, int c);
+	AttackShieldCard(std::string n, int e);
 	virtual Card* clone();
 	virtual void Card_Effect(Battle* b);
 	virtual ~AttackShieldCard();

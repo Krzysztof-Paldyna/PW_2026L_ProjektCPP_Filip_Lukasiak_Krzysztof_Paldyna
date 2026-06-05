@@ -41,9 +41,8 @@ int main(){
                 }
             }
 
-            window.clear(sf::Color::White);
-            
             Game_Master.Update_And_Render(mouse_x, mouse_y, left_mouse_clicked);
+            left_mouse_clicked = false;
 
             window.display();
         }

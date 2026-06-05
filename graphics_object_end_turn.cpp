@@ -40,6 +40,7 @@ void graphics_object_end_turn::draw(sf::RenderWindow &window, sf::Font &font){//
     sf::Text text;
     text.setFont(font);
     text.setString(name);
+    text.Bold;
     text.setCharacterSize(20);
     text.setFillColor(sf::Color::Black);
     text.setOutlineColor(sf::Color::White);

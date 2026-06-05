@@ -20,6 +20,7 @@ GameMaster::GameMaster(sf::RenderWindow *w): Start_Button("Start"), Quit_Button(
 
 void GameMaster::Update_And_Render(int mx, int my, bool isClicked)
 {
+    Game_Window->clear(sf::Color::White);
     switch (State_of_Game)
     {
         case GameState::MainMenu:
@@ -116,11 +117,12 @@ void GameMaster::Update_Battle_Frame(int mx, int my, bool isClicked) {
     }
 
     // Obsługa kliknięć
-    if (isClicked) 
-    {
+    if(isClicked){
         current_battle->Handle_Mouse_Click(mx, my);
     }
 
+    current_battle->EnemyAction();
+    
     // Rysowanie (wywołujemy metody, które już masz)
     current_battle->Render_Cards();
     current_battle->Render_Player();

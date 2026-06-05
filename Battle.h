@@ -53,7 +53,7 @@ public:
 	void Render_Energy_Counter();
 	void Select_Card(int mx, int my);
 	void Select_Enemy(int mx, int my);
-	void Handle_Mouse_Click(int mx, int my);
+	void Handle_Mouse_Click(int mx, int my);	//funkcja zarządza wyborem kart i ich celów oraz zmienia stan gry 
 
 	void CanPlayCardCheck(); //Konsola
 	void CanPlayCardCheck2(Card *c, Enemy *e, int i); //Okno

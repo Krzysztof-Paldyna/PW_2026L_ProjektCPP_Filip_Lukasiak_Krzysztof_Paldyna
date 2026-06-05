@@ -56,8 +56,23 @@ void Character::Add_Shield(int s)
 }
 void Character::TakeDamage(int dmg)
 {
-	CurrentHp -= dmg;
-	set_hp(CurrentHp);
+	if (Shield > 0)
+	{
+		if (dmg > Shield)
+		{
+			CurrentHp -= dmg - Shield;
+			Shield = 0;
+		}
+		else
+		{
+			Shield -= dmg;
+		}
+	}
+	else
+	{
+		CurrentHp -= dmg;
+	}
+	set_hp(CurrentHp);	//update wartości wyświetlanej
 	if (CurrentHp <= 0)
 	{
 		CurrentHp = 0;
@@ -84,6 +99,7 @@ PlayerCharacter::PlayerCharacter()
 	file_path = "None";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
+	update_texture();
 }
 PlayerCharacter::PlayerCharacter(std::string n, int hp)
 {
@@ -97,6 +113,7 @@ PlayerCharacter::PlayerCharacter(std::string n, int hp)
 	file_path = "resources/textures/PlayerCharacter.png";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
+	update_texture();
 	std::cout << "[DEBUG] Koniec konstruktora PlayerCharacter: " << name << std::endl;
 }
 std::string PlayerCharacter::Return_Player_Character_Description()
@@ -115,6 +132,7 @@ PlayerCharacter& PlayerCharacter::operator=(const PlayerCharacter& other)
 	max_hp = other.MaxHP;
 	current_hp = other.CurrentHp;
 	Charater_Description = other.Charater_Description;
+	update_texture();
 	return *this;
 }
 void PlayerCharacter::Set_Character_Description(std::string desc)
@@ -141,6 +159,7 @@ Enemy::Enemy()
 	file_path = "None";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
+	update_texture();
 }
 Enemy* Enemy::clone()
 {
@@ -157,6 +176,7 @@ Enemy::Enemy(std::string n, int hp)
 	file_path = "None";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
+	update_texture();
 }
 void Enemy::EnemyBehaviour(Battle* battle)
 {
@@ -178,6 +198,7 @@ BasicEnemy::BasicEnemy()
 	file_path = "None";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
+	update_texture();
 }
 BasicEnemy::BasicEnemy(std::string n, int hp)
 {
@@ -190,6 +211,7 @@ BasicEnemy::BasicEnemy(std::string n, int hp)
 	file_path = "resources/textures/BasicEnemy.png";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
+	update_texture();
 }
 void BasicEnemy::EnemyBehaviour(Battle* battle)
 {

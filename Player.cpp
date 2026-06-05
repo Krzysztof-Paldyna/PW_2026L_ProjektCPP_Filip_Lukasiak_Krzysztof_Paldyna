@@ -77,8 +77,14 @@ void Player::Return_Discarded_Cards_to_Deck()
 {
 	while(DiscardDeck.size() != 0)
 	{
-		PlayerDeck.push_back(DiscardDeck.at(0));
-		DiscardDeck.erase(DiscardDeck.begin() + 0);
+		if(PlayerDeck.size() != 0){
+			int g = rand() % PlayerDeck.size();
+			PlayerDeck.insert(PlayerDeck.begin() + g, DiscardDeck.at(0));
+		}
+		else{
+			PlayerDeck.push_back(DiscardDeck.at(0));
+		}
+		DiscardDeck.erase(DiscardDeck.begin());
 	}
 }
 void Player::SetHand()
@@ -116,7 +122,7 @@ void Player::Give_Card_to_Hand(int g)
 	HandCards.push_back(PlayerDeck.at(g));
 	PlayerDeck.erase(PlayerDeck.begin() + g);
 }
-void Player::Give_Random_Card_to_Hand()
+void Player::Draw_Card()
 {
 	if(PlayerDeck.size() == 0 && DiscardDeck.size() == 0)
 	{
@@ -128,20 +134,8 @@ void Player::Give_Random_Card_to_Hand()
 		{
 			Return_Discarded_Cards_to_Deck();
 		}
-		int g;
-		if(PlayerDeck.size() > 0)
-		{
-			g = rand() % PlayerDeck.size();
-			HandCards.push_back(PlayerDeck.at(g));
-			PlayerDeck.erase(PlayerDeck.begin() + g);
-			
-		}
-		else
-		{
-			g = 0;
-			HandCards.push_back(PlayerDeck.at(g));
-			PlayerDeck.erase(PlayerDeck.begin() + g);
-		}
+		HandCards.push_back(PlayerDeck.at(0));
+		PlayerDeck.erase(PlayerDeck.begin());
 	}
 }
 void Player::RerollHand()

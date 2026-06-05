@@ -15,15 +15,17 @@ protected:
     sf::Sprite character_image;    //sprite wyświetlany na karcie
     uint max_hp;    
     int current_hp;
+    int current_shield;
 public:
     graphics_object_character(std::string name = "MISSING NAME", std::string file_path = "None", uint dim_x = 300, uint dim_y = 300, uint x = 0, uint y = 0); //konstruktor domyślno-parametryczny
     ~graphics_object_character();  //destruktor
 
     void set_max_hp(uint new_max_hp);
     void set_hp(int new_hp);
+    void set_shield(int new_shield);
     void draw(sf::RenderWindow &window, sf::Font &font) override; //przeciążana funkcja rysująca kartę w podanym oknie SMFL, z użyciem podanej czcionki
 
-    void update_texture();
+    void update_texture(); //wczytanie tekstury z pliku do sprite'a, konieczne przy zmianie ścieżki
 };
 
 #endif
