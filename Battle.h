@@ -38,6 +38,9 @@ protected:
 	graphics_object_end_turn *end_turn_button = nullptr;
 	graphics_object_energy_counter *energy_counter = nullptr;
 	graphics_object_deck_info *deck_amount_info = nullptr;
+	bool isBattleOver = false;
+	bool PlayerLost = false;
+	bool EnemyLost = false;
 	
 public:
 	Battle();
@@ -65,6 +68,9 @@ public:
 	void EndBattleCheck();
 
 	Enemy* &Return_Selected_Enemy();
+	bool Return_Is_Battle_Over();
+	bool Return_Player_Lost();
+	bool Return_Enemy_Lost();
 
 	~Battle();
 

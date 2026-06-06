@@ -91,6 +91,7 @@ void AttackCard::Card_Effect(Battle* b)
 	b->Return_Selected_Enemy()->TakeDamage(Attack);
 	std::cout << "Efect Karty Ataku!!! Zadaje " << Attack << " Obrazen " <<b->Return_Selected_Enemy()->Return_Name() << std::endl;
 	std::cout<< "Ma aktualnie "<< b->Return_Selected_Enemy()->Return_CurrentHP()<<std::endl;
+	b->EndBattleCheck();
 }
 Card* AttackCard:: kreator(std::string n, int e)
 {
@@ -134,6 +135,7 @@ void ShieldCard::Card_Effect(Battle* b)
 	b->Return_Player()->Return_Character().Add_Shield(Shield);
 	std::cout << "Efect Karty Tarczy!!! Dodaje " << Shield << " Punktów tarczy " << std::endl;
 	std::cout<< "Ma aktualnie "<< b->Return_Player()->Return_Character().Return_Shield() <<std::endl;
+	b->EndBattleCheck();
 }
 Card* ShieldCard::kreator(std::string n, int e)
 {
@@ -177,6 +179,7 @@ void AttackShieldCard::Card_Effect(Battle* b)
 	b->Return_Player()->Return_Character().Add_Shield(Shield);
 	std::cout << "Efect Karty Ataku!!! Zadaje " << Attack << " Obrazen " <<b->Return_Selected_Enemy()->Return_Name() << std::endl;
 	std::cout<< "Ma aktualnie "<< b->Return_Selected_Enemy()->Return_CurrentHP()<<std::endl;
+	b->EndBattleCheck();
 }
 Card* AttackShieldCard::kreator(std::string n, int e)
 {
@@ -217,6 +220,7 @@ void DrawCard::Card_Effect(Battle* b)
 	for(int i = 0; i < 2; ++i){
 		b->Return_Player()->Draw_Card();
 	}
+	b->EndBattleCheck();
 }
 Card* DrawCard::kreator(std::string n, int e)
 {

@@ -14,6 +14,7 @@ Battle::Battle(Player* pl, std::vector<Enemy*> be, sf::RenderWindow *bw, graphic
 	end_turn_button = end;
 	energy_counter = e_counter;
 	deck_amount_info = d_info;
+	isBattleOver = false;
 }
 void Battle::PlayerTurn()
 {
@@ -104,6 +105,7 @@ void Battle::EnemyAction()
 		for(auto &v : Battle_Enemies)
 		{
 			v->EnemyBehaviour(this);
+			EndBattleCheck();
 		}
 		TurnCounter += 1;
 
@@ -338,6 +340,11 @@ void Battle::Select_Enemy(int mx, int my)
 
 void Battle::EndBattleCheck()
 {
+	if(player->Return_Character().Return_isDead() == true)
+	{
+		isBattleOver = true;
+		PlayerLost = true;
+	}
 	bool End = true;
 	for(int i = 0; i < Battle_Enemies.size(); i++)
 	{
@@ -348,7 +355,13 @@ void Battle::EndBattleCheck()
 	}
 	if(End == true)
 	{
+		player->Reset_Energy();
+		player->Return_Discarded_Cards_to_Deck();
+		player->Return_Hand_Cards_to_Deck();
+		player->Return_Character().Add_Shield(-1 * player->Return_Character().Return_Shield());
 		std::cout<<" KONIEC "<<std::endl;
+		isBattleOver = true;
+		EnemyLost = true;
 	}
 }
 std::vector<Enemy*>& Battle::Return_Enemies()
@@ -380,6 +393,19 @@ void Battle::CanPlayCardCheck2(Card *c, Enemy *e, int i)
 	{
 		std::cout << "Nie masz energii by zagrac te karte :( " << std::endl;
 	}
+}
+bool Battle::Return_Is_Battle_Over()
+{
+	return isBattleOver;
+}
+
+bool Battle::Return_Player_Lost()
+{
+	return PlayerLost;
+}
+bool Battle::Return_Enemy_Lost()
+{
+	return EnemyLost;
 }
 Player* Battle::Return_Player()
 {

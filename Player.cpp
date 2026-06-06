@@ -87,6 +87,20 @@ void Player::Return_Discarded_Cards_to_Deck()
 		DiscardDeck.erase(DiscardDeck.begin());
 	}
 }
+void Player::Return_Hand_Cards_to_Deck()
+{
+	while(HandCards.size() != 0)
+	{
+		if(PlayerDeck.size() != 0){
+			int g = rand() % PlayerDeck.size();
+			PlayerDeck.insert(PlayerDeck.begin() + g, HandCards.at(0));
+		}
+		else{
+			PlayerDeck.push_back(HandCards.at(0));
+		}
+		HandCards.erase(HandCards.begin());
+	}
+}
 void Player::SetHand()
 {
 	if (Hand_Size <= PlayerDeck.size() && !PlayerDeck.empty())

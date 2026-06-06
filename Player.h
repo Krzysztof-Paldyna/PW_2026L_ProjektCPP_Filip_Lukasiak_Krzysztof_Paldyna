@@ -37,6 +37,7 @@ public:
 	void Discard_Card_From_Hand(int g);
 	void Discard_Card_From_Deck(int g);
 	void Return_Discarded_Cards_to_Deck();	//zwraca wszystkie karty z talii odrzuconych do talii dobieranych i je przetasowuje
+	void Return_Hand_Cards_to_Deck();
 	void RerollHand();
 
 	void SetHand();
