@@ -54,8 +54,22 @@ void Character::Add_Shield(int s)
 {
 	Shield += s;
 }
+
+std::vector<graphics_object_dmg_val> &Character::Return_Damage_Val(){
+	return damage_icons;
+}
 void Character::TakeDamage(int dmg)
 {
+	std::random_device RNG;
+	std::mt19937 generator(RNG());
+	std::uniform_int_distribution<int> x_distribution(-80, 80);
+	std::uniform_int_distribution<int> y_distribution(-10, 100);
+	int pos_x = x + dim_x/2 + x_distribution(generator) - 10*std::to_string(dmg).length();
+	int pos_y = y + dim_y/4 - y_distribution(generator);
+	graphics_object_dmg_val dmg_icon(std::to_string(dmg), "None", 0, 0, pos_x, pos_y);
+	damage_icons.push_back(dmg_icon);
+	//std::cout << "size of icons vector: " << damage_icons.size() << std::endl;
+
 	if (Shield > 0)
 	{
 		if (dmg > Shield)

@@ -3,6 +3,8 @@
 
 #include<vector>
 #include<iostream>
+#include<chrono>
+#include<cmath>
 #include<SFML/System.hpp>
 #include<SFML/Window.hpp>
 #include<SFML/Graphics.hpp>

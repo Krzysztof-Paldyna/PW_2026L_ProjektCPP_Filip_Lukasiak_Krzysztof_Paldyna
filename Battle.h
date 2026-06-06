@@ -6,6 +6,7 @@
 #include "graphics_object_end_turn.hpp"
 #include "graphics_object_energy_counter.hpp"
 #include "graphics_object_deck_info.hpp"
+#include "graphics_object_damage_val.hpp"
 class Player;
 class Enemy;
 class Card;

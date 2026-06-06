@@ -4,8 +4,10 @@
 #include <iostream>
 #include <cstdlib>
 #include <vector>
+#include <random>
 #include <map>
 #include "graphics_object_character.hpp"
+#include "graphics_object_damage_val.hpp"
 
 class Battle;
 
@@ -30,6 +32,7 @@ protected:
 	int Shield = 0;
 	bool isDead = false;
 	ElementType CharacterType;
+	std::vector<graphics_object_dmg_val> damage_icons;
 public:
 	Character();
 	Character(std::string n, int hp);
@@ -43,6 +46,7 @@ public:
 	void Add_Shield(int s);
 	int Return_Shield();
 	bool Return_isDead();
+	std::vector<graphics_object_dmg_val> &Return_Damage_Val();
 
 	void TakeDamage(int dmg);
 

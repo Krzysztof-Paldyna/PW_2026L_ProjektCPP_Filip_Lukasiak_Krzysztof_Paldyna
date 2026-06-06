@@ -131,6 +131,19 @@ void Battle::Render_Player()
 	//rysowanie postaci gracza
     player->Return_Character().set_position(int(battle_window->getSize().x / 6 - player->Return_Character().get_dim_x()/2), int (battle_window->getSize().y / 4));
     player->Return_Character().draw(*battle_window, card_font);
+	
+	if(player->Return_Character().Return_Damage_Val().size() > 0){
+		for(auto &v : player->Return_Character().Return_Damage_Val()){
+			v.draw(*battle_window, card_font);
+		}
+		for(int i = 0; i < player->Return_Character().Return_Damage_Val().size(); ++i){
+			if(!player->Return_Character().Return_Damage_Val().at(i).get_state()){
+				player->Return_Character().Return_Damage_Val().erase(player->Return_Character().Return_Damage_Val().begin() + i);
+				//std::cout << "player damage icon deleted" << std::endl;
+				i = 0;
+			}
+		}
+	}
 }
 void Battle::Render_Enemies()
 {
@@ -142,6 +155,19 @@ void Battle::Render_Enemies()
 		//rysowanie wrogów w odpowiednich pozycjach
         Battle_Enemies.at(i)->set_position(int(battle_window->getSize().x / 2 * (1 + 1/((Battle_Enemies.size() + 1) * (i + 1))) + Battle_Enemies.at(i)->get_dim_x()), int(battle_window->getSize().y / 4));
         Battle_Enemies.at(i)->draw(*battle_window, card_font);
+
+		if(Battle_Enemies.at(i)->Return_Damage_Val().size() > 0){
+			for(auto &v : Battle_Enemies.at(i)->Return_Damage_Val()){
+				v.draw(*battle_window, card_font);
+			}
+			for(int j = 0; j < Battle_Enemies.at(i)->Return_Damage_Val().size(); ++j){
+				if(!Battle_Enemies.at(i)->Return_Damage_Val().at(j).get_state()){
+					Battle_Enemies.at(i)->Return_Damage_Val().erase(Battle_Enemies.at(i)->Return_Damage_Val().begin() + j);
+					//std::cout << "enemy damage icon deleted" << std::endl;
+					j = 0;
+				}
+			}
+		}
     }
 }
 
