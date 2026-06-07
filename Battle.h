@@ -64,7 +64,6 @@ public:
 
 	void EndPlayerTurn();
 	void EnemyAction();
-	void PlayerTurn();
 	void EndBattleCheck();
 
 	Enemy* &Return_Selected_Enemy();

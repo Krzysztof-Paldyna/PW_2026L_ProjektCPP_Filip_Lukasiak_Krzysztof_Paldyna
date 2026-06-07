@@ -2,24 +2,17 @@
 
 std::map<int, CardCreator> CardFactory::Registered_Cards;
 
-Card::Card(std::string n, int e)
-{
-	Nazwa = n;
-	Energy = e;
-	Card_class = Attack_Card;
-	CardType = None;
-	//elementy graficzne:
-	name = n;
-	cost = std::to_string(e);
-	file_path = "None";
-	update_texture();
-}
 Card::Card()
 {
 	Nazwa = "NienazwanaKarta";
 	Energy = 1;
 	Card_class = Attack_Card;
 	CardType = None;
+	//elementy graficzne:
+	name = Nazwa;
+	cost = std::to_string(Energy);
+	file_path = "None";
+	update_texture();
 }
 Card* Card::clone()
 {
@@ -61,24 +54,16 @@ Card::~Card()
 //--------------------------------------------------------------AttackCard-----------------------------------------------
 AttackCard::AttackCard()
 {
-	Nazwa = "NienazwanaKartaAtaku";
+	Nazwa = "Basic Attack";
 	Energy = 1;
-	Card_class = Attack_Card;
-	Attack = 1;
-	CardType = None;
-}
-AttackCard::AttackCard(std::string n, int e)
-{
-	Nazwa = n;
-	Energy = e;
 	Attack = 6;
 	Card_class = Attack_Card;
 	CardType = None;
 	//elementy graficzne:
-	name = n;
-	cost = std::to_string(e);
+	name = Nazwa;
+	cost = std::to_string(Energy);
 	text = "Ta Karta Atakuje za 6 dmg";
-	file_path = "resources/textures/BasicAttack.png";
+	file_path = "resources/textures/AttackCardSprite.png";
 	update_texture();
 }
 Card* AttackCard::clone() 
@@ -93,9 +78,9 @@ void AttackCard::Card_Effect(Battle* b)
 	std::cout<< "Ma aktualnie "<< b->Return_Selected_Enemy()->Return_CurrentHP()<<std::endl;
 	b->EndBattleCheck();
 }
-Card* AttackCard:: kreator(std::string n, int e)
+Card* AttackCard:: kreator()
 {
-	return new AttackCard(n, e);
+	return new AttackCard();
 }
 AttackCard::~AttackCard()
 {
@@ -103,26 +88,19 @@ AttackCard::~AttackCard()
 }
 
 //--------------------------------------------------------------ShieldCard-----------------------------------------------
+
 ShieldCard::ShieldCard()
 {
-	Nazwa = "NienazwanaKartaTarczy";
+	Nazwa = "Basic Shield";
 	Energy = 1;
-	Card_class = Skill_Card;
-	Shield = 1;
-	CardType = None;
-}
-ShieldCard::ShieldCard(std::string n, int e)
-{
-	Nazwa = n;
-	Energy = e;
 	Shield = 5;
 	Card_class = Skill_Card;
 	CardType = None;
 	//elementy graficzne:
-	name = n;
-	cost = std::to_string(e);
+	name = Nazwa;
+	cost = std::to_string(Energy);
 	text = "Ta Karta daje 5 Tarczy";
-	file_path = "None";
+	file_path = "resources/textures/ShieldCardSprite.png";
 	update_texture();
 }
 Card* ShieldCard::clone() 
@@ -137,9 +115,9 @@ void ShieldCard::Card_Effect(Battle* b)
 	std::cout<< "Ma aktualnie "<< b->Return_Player()->Return_Character().Return_Shield() <<std::endl;
 	b->EndBattleCheck();
 }
-Card* ShieldCard::kreator(std::string n, int e)
+Card* ShieldCard::kreator()
 {
-	return new ShieldCard(n, e);
+	return new ShieldCard();
 }
 ShieldCard::~ShieldCard()
 {
@@ -148,24 +126,16 @@ ShieldCard::~ShieldCard()
 //--------------------------------------------------------------AttackShieldCard-----------------------------------------------
 AttackShieldCard::AttackShieldCard()
 {
-	Nazwa = "NienazwanaKartaAtaku";
+	Nazwa = "Basic Attack\nShield";
 	Energy = 1;
-	Card_class = Attack_Card;
-	Attack = 1;
-	CardType = None;
-}
-AttackShieldCard::AttackShieldCard(std::string n, int e)
-{
-	Nazwa = n;
-	Energy = e;
 	Attack = 4;
 	Shield = 2;
 	Card_class = Attack_Card;
 	//elementy graficzne:
-	name = n;
-	cost = std::to_string(e);
+	name = Nazwa;
+	cost = std::to_string(Energy);
 	text = "Ta Karta Atakuje za 4 dmg\ni daje 2 tarczy";
-	file_path = "resources/textures/aaa.jpg";
+	file_path = "resources/textures/AttackShieldCardSprite.png";
 	update_texture();
 }
 Card* AttackShieldCard::clone()
@@ -181,9 +151,9 @@ void AttackShieldCard::Card_Effect(Battle* b)
 	std::cout<< "Ma aktualnie "<< b->Return_Selected_Enemy()->Return_CurrentHP()<<std::endl;
 	b->EndBattleCheck();
 }
-Card* AttackShieldCard::kreator(std::string n, int e)
+Card* AttackShieldCard::kreator()
 {
-	return new AttackShieldCard(n, e);
+	return new AttackShieldCard();
 }
 AttackShieldCard::~AttackShieldCard()
 {
@@ -192,22 +162,15 @@ AttackShieldCard::~AttackShieldCard()
 //--------------------------------------------------------------DrawCard-----------------------------------------------
 DrawCard::DrawCard()
 {
-	Nazwa = "NienazwanaKartaTarczy";
+	Nazwa = "Draw";
 	Energy = 1;
 	Card_class = Skill_Card;
 	CardType = None;
-}
-DrawCard::DrawCard(std::string n, int e)
-{
-	Nazwa = n;
-	Energy = e;
-	Card_class = Skill_Card;
-	CardType = None;
 	//elementy graficzne:
-	name = n;
-	cost = std::to_string(e);
+	name = Nazwa;
+	cost = std::to_string(Energy);
 	text = "Dobierz dwie karty";
-	file_path = "None";
+	file_path = "resources/textures/DrawCardSprite.png";
 	update_texture();
 }
 Card* DrawCard::clone() 
@@ -222,11 +185,120 @@ void DrawCard::Card_Effect(Battle* b)
 	}
 	b->EndBattleCheck();
 }
-Card* DrawCard::kreator(std::string n, int e)
+Card* DrawCard::kreator()
 {
-	return new DrawCard(n, e);
+	return new DrawCard();
 }
 DrawCard::~DrawCard()
+{
+
+}
+
+//--------------------------------------------------------------FireAttack-----------------------------------------------
+FireAttack::FireAttack()
+{
+	Nazwa = "Fire Attack";
+	Energy = 1;
+	Attack = 4;
+	Card_class = Attack_Card;
+	CardType = Fire;
+	//elementy graficzne:
+	name = Nazwa;
+	cost = std::to_string(Energy);
+	text = "Atakujesz ogniem 3 razy\npo 4 dmg i jesli masz tez\ntyp ogniowy atakujesz\n3 razy";
+	file_path = "resources/textures/FireAttackSprite.png";
+	update_texture();
+}
+Card* FireAttack::clone() 
+{
+	return new FireAttack(*this);
+}
+void FireAttack::Card_Effect(Battle* b)
+{
+	b->Return_Player()->Reduce_Energy(Energy);
+	b->Return_Selected_Enemy()->TakeDamage(Attack);
+	b->Return_Selected_Enemy()->TakeDamage(Attack);
+	if(CardType == b->Return_Player()->Return_Character().Return_Element_Type())
+	{
+		b->Return_Selected_Enemy()->TakeDamage(Attack);
+	}
+	b->EndBattleCheck();
+}
+Card* FireAttack:: kreator()
+{
+	return new FireAttack();
+}
+FireAttack::~FireAttack()
+{
+
+}
+//--------------------------------------------------------------Splash-----------------------------------------------
+Splash::Splash()
+{
+	Nazwa = "Splash";
+	Energy = 0;
+	Attack = 2;
+	Card_class = Attack_Card;
+	CardType = Water;
+	//elementy graficzne:
+	name = Nazwa;
+	cost = std::to_string(Energy);
+	text = "Lekko ochlapujesz wroga\nza 2 dmg, ale jesli\n jestes typu wodnego\ndobierasz tez karte";
+	file_path = "resources/textures/SplashCardSprite.png";
+	update_texture();
+}
+Card* Splash::clone() 
+{
+	return new Splash(*this);
+}
+void Splash::Card_Effect(Battle* b)
+{
+	b->Return_Player()->Reduce_Energy(Energy);
+	b->Return_Selected_Enemy()->TakeDamage(Attack);
+	if(CardType == b->Return_Player()->Return_Character().Return_Element_Type())
+	{
+		b->Return_Player()->Draw_Card();
+	}
+	b->EndBattleCheck();
+}
+Card* Splash::kreator()
+{
+	return new Splash();
+}
+Splash::~Splash()
+{
+
+}
+//--------------------------------------------------------------ThunderBolt-----------------------------------------------
+ThunderBolt::ThunderBolt()
+{
+	Nazwa = "Thunder Bolt";
+	Energy = 2;
+	Attack = 13;
+	Card_class = Attack_Card;
+	CardType = Electric;
+	//elementy graficzne:
+	name = Nazwa;
+	cost = std::to_string(Energy);
+	text = "Walisz MEGA PIORUNEM\nza 13 dmg";
+	file_path = "resources/textures/ThunderBoltSprite.png";
+	update_texture();
+}
+Card* ThunderBolt::clone() 
+{
+	return new ThunderBolt(*this);
+}
+void ThunderBolt::Card_Effect(Battle* b)
+{
+	b->Return_Player()->Reduce_Energy(Energy);
+	b->Return_Selected_Enemy()->TakeDamage(Attack);
+	b->EndBattleCheck();
+}
+Card* ThunderBolt::kreator()
+{
+	return new ThunderBolt();
+}
+ThunderBolt::~ThunderBolt()
 {
 
 }
@@ -235,9 +307,9 @@ void CardFactory::regist(const int& id, CardCreator k)
 {
 	Registered_Cards[id] = k;
 }
-Card* CardFactory::create(const int& id, std::string n, int e)
+Card* CardFactory::create(const int& id)
 {
-	return Registered_Cards[id](n, e);
+	return Registered_Cards[id]();
 }
 void CardFactory::Initialize()
 {
@@ -246,4 +318,12 @@ void CardFactory::Initialize()
     regist(2, &ShieldCard::kreator);
     regist(3, &AttackShieldCard::kreator);
     regist(4, &DrawCard::kreator);
+	regist(5, &FireAttack::kreator);
+	regist(6, &Splash::kreator);
+	regist(7, &ThunderBolt::kreator);
+}
+Card* CardFactory::create_random()
+{
+	int g = 1 + rand() % Registered_Cards.size(); 
+	return Registered_Cards[g]()->clone();
 }

@@ -47,6 +47,7 @@ public:
 	int Return_Shield();
 	bool Return_isDead();
 	std::vector<graphics_object_dmg_val> &Return_Damage_Val();
+	ElementType Return_Element_Type();
 
 	void TakeDamage(int dmg);
 
@@ -68,25 +69,36 @@ public:
 class Enemy: public Character
 {
 protected:
-	
+	int Intention = 0;
+
 public:
 	Enemy();
-	Enemy(std::string n, int hp);
 	virtual Enemy* clone();
 	virtual ~Enemy();
-
 	virtual void EnemyBehaviour(Battle* battle);
+
+	int Return_Intention();
+	void Set_Intetion_Sprite(int I, int v);
 };
-typedef Enemy* (*EnemyCreator) (std::string n, int hp);
+typedef Enemy* (*EnemyCreator) ();
 
 class BasicEnemy: public Enemy
 {
 public:
 	BasicEnemy();
-	BasicEnemy(std::string n, int hp);
-	static Enemy* kreator(std::string n, int hp);
+	static Enemy* kreator();
 	virtual Enemy* clone();
 	virtual ~BasicEnemy();
+	virtual void EnemyBehaviour(Battle* battle);
+};
+
+class Jez: public Enemy
+{
+public:
+	Jez();
+	static Enemy* kreator();
+	virtual Enemy* clone();
+	virtual ~Jez();
 	virtual void EnemyBehaviour(Battle* battle);
 };
 
@@ -97,6 +109,7 @@ private:
 public:
 	static void Initialize(); 
 	static void regist(const int& id, EnemyCreator k);
-	static Enemy* create(const int& id, std::string n, int hp);
+	static Enemy* create(const int& id);
+	static Enemy* create_random();
 };
 #endif

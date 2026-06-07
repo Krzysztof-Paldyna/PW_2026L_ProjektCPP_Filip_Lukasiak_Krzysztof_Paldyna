@@ -147,23 +147,31 @@ void GameMaster::Choose_Character(int mx, int my, bool isClicked)
             my >= Character_1.get_y() && my <= Character_1.get_y() + Character_1.get_dim_y())
         {
             Playing_Player.Set_Character(Character_1);
-            Playing_Player.Add_Card(CardFactory::create(1, "Basic Attack", 1));
-            Playing_Player.Add_Card(CardFactory::create(1, "Basic Attack", 1));
-            Playing_Player.Add_Card(CardFactory::create(2, "Basic Shield", 1));
-            Playing_Player.Add_Card(CardFactory::create(2, "Basic Shield", 1));
-            Playing_Player.Add_Card(CardFactory::create(4, "Draw", 0));
+            Playing_Player.Add_Card(CardFactory::create(1)->clone());
+            Playing_Player.Add_Card(CardFactory::create(1)->clone());
+            Playing_Player.Add_Card(CardFactory::create(1)->clone());
+            Playing_Player.Add_Card(CardFactory::create(1)->clone());
+            Playing_Player.Add_Card(CardFactory::create(2)->clone());
+            Playing_Player.Add_Card(CardFactory::create(2)->clone());
+            Playing_Player.Add_Card(CardFactory::create(2)->clone());
+            Playing_Player.Add_Card(CardFactory::create(2)->clone());
+            Playing_Player.Add_Card(CardFactory::create(4)->clone());
             Start_New_Battle();
         }
          if (mx >= Character_2.get_x() && mx <= Character_2.get_x() + Character_2.get_dim_x() &&
                 my >= Character_2.get_y() && my <= Character_2.get_y() + Character_2.get_dim_y())
         {
             Playing_Player.Set_Character(Character_2);
-            Playing_Player.Add_Card(CardFactory::create(1, "Basic Attack", 1));
-            Playing_Player.Add_Card(CardFactory::create(1, "Basic Attack", 1));
-            Playing_Player.Add_Card(CardFactory::create(2, "Basic Shield", 1));
-            Playing_Player.Add_Card(CardFactory::create(2, "Basic Shield", 1));
-            Playing_Player.Add_Card(CardFactory::create(3, "Basic Attack Shield", 1));
-            Playing_Player.Add_Card(CardFactory::create(3, "Basic Attack Shield", 1));
+            Playing_Player.Add_Card(CardFactory::create(1)->clone());
+            Playing_Player.Add_Card(CardFactory::create(1)->clone());
+            Playing_Player.Add_Card(CardFactory::create(2)->clone());
+            Playing_Player.Add_Card(CardFactory::create(2)->clone());
+            Playing_Player.Add_Card(CardFactory::create(1)->clone());
+            Playing_Player.Add_Card(CardFactory::create(1)->clone());
+            Playing_Player.Add_Card(CardFactory::create(2)->clone());
+            Playing_Player.Add_Card(CardFactory::create(2)->clone());
+            Playing_Player.Add_Card(CardFactory::create(3)->clone());
+            Playing_Player.Add_Card(CardFactory::create(3)->clone());
             Start_New_Battle();
         }
     }
@@ -177,7 +185,7 @@ void GameMaster::Start_New_Battle()
         delete current_battle;
     }
     std::vector<Enemy*> Act_Enemies;
-    Act_Enemies.push_back(EnemyFactory::create(1, "BasicEnemy", 25));
+    Act_Enemies.push_back(EnemyFactory::create_random());
 
     current_battle = new Battle(&Playing_Player, Act_Enemies, Game_Window, &end, &e_counter, &d_info);
     
@@ -225,9 +233,9 @@ void GameMaster::Genarate_Cards_To_Choose()
         }
         Card_to_Choose.clear();
     }
-    Card_to_Choose.push_back(CardFactory::create(1, "Basic Attack", 1)->clone());
-    Card_to_Choose.push_back(CardFactory::create(1, "Basic Attack", 1)->clone());
-    Card_to_Choose.push_back(CardFactory::create(1, "Basic Attack", 1)->clone());
+    Card_to_Choose.push_back(CardFactory::create_random());
+    Card_to_Choose.push_back(CardFactory::create_random());
+    Card_to_Choose.push_back(CardFactory::create_random());
 
     State_of_Game = GameState::CardChoice;
 }
@@ -250,6 +258,12 @@ void GameMaster::Choose_Card_To_Add(int mx, int my, bool isClicked)
     }
     if (isClicked)
     {
+        if (mx >= Skip_Button.get_x() && mx <= Skip_Button.get_x() + Skip_Button.get_dim_x() &&
+            my >= Skip_Button.get_y() && my <= Skip_Button.get_y() + Skip_Button.get_dim_y())
+            {
+                    Selected_Card = nullptr;
+                    Start_New_Battle();
+            }
         
         for(int i = 0; i <Card_to_Choose.size(); i++)
 		{
@@ -283,6 +297,7 @@ void GameMaster::Choose_Card_To_Add(int mx, int my, bool isClicked)
                     {
                         Selected_Card->set_highlight_state(highlight::none);
                         Playing_Player.Add_Card(Selected_Card->clone());
+                        Selected_Card = nullptr;
                         Start_New_Battle();
                     }
 

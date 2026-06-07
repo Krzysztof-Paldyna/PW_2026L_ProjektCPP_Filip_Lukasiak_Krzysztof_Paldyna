@@ -13,6 +13,13 @@ protected:
     sf::RectangleShape hp_bar;
     sf::Texture character_texture;   //tekstura która jest wyświetlana na karcie, MUSI BYĆ bo sprite odwołuje się pointerem do tekstury
     sf::Sprite character_image;    //sprite wyświetlany na karcie
+
+    bool isEnemy = true;
+    sf::Texture Attack_Texture;
+    sf::Texture Shield_Texture;   
+    sf::Sprite Intetion_Image;
+    sf::Text Intetion_Value_Text;
+
     uint max_hp;    
     int current_hp;
     int current_shield;

@@ -30,7 +30,6 @@ protected:
 
 public:
 	Card();
-	Card(std::string n, int e);
 	virtual Card* clone(); //Funkcja zeby mozna robic pare tych samych kart
 	std::string Return_Card_Name();
 	int Return_Card_Cost();
@@ -39,7 +38,7 @@ public:
 	virtual ~Card();
 };
 
-typedef Card* (*CardCreator) (std::string n, int e);
+typedef Card* (*CardCreator) ();
 
 
 
@@ -49,11 +48,10 @@ protected:
 	int Attack = 1;
 public:
 	AttackCard();
-	AttackCard(std::string n, int e);
 	virtual Card* clone();
 	virtual void Card_Effect(Battle* b);
 	virtual ~AttackCard();
-	static Card* kreator(std::string n, int e);
+	static Card* kreator();
 	static int const Id = 1;
 };
 
@@ -64,11 +62,10 @@ protected:
 	int Shield = 1;
 public:
 	ShieldCard();
-	ShieldCard(std::string n, int e);
 	virtual Card* clone();
 	virtual void Card_Effect(Battle* b);
 	virtual ~ShieldCard();
-	static Card* kreator(std::string n, int e);
+	static Card* kreator();
 	static int const Id = 2;
 };
 
@@ -79,11 +76,10 @@ protected:
 	int Shield = 1;
 public:
 	AttackShieldCard();
-	AttackShieldCard(std::string n, int e);
 	virtual Card* clone();
 	virtual void Card_Effect(Battle* b);
 	virtual ~AttackShieldCard();
-	static Card* kreator(std::string n, int e);
+	static Card* kreator();
 	static int const Id = 3;
 };
 
@@ -92,14 +88,53 @@ class DrawCard: public Card
 protected:
 public:
 	DrawCard();
-	DrawCard(std::string n, int e);
 	virtual Card* clone();
 	virtual void Card_Effect(Battle* b);
 	virtual ~DrawCard();
-	static Card* kreator(std::string n, int e);
+	static Card* kreator();
 	static int const Id = 4;
 };
 
+class FireAttack: public Card
+{
+protected:
+	int Attack = 1;
+public:
+	FireAttack();
+	virtual Card* clone();
+	virtual void Card_Effect(Battle* b);
+	virtual ~FireAttack();
+	static Card* kreator();
+	static int const Id = 5;
+};
+
+
+
+class Splash: public Card
+{
+protected:
+	int Attack = 1;
+public:
+	Splash();
+	virtual Card* clone();
+	virtual void Card_Effect(Battle* b);
+	virtual ~Splash();
+	static Card* kreator();
+	static int const Id = 6;
+};
+
+class ThunderBolt: public Card
+{
+protected:
+	int Attack = 1;
+public:
+	ThunderBolt();
+	virtual Card* clone();
+	virtual void Card_Effect(Battle* b);
+	virtual ~ThunderBolt();
+	static Card* kreator();
+	static int const Id = 7;
+};
 
 class CardFactory
 {
@@ -108,6 +143,7 @@ private:
 public:
 	static void Initialize(); 
 	static void regist(const int& id, CardCreator k);
-	static Card* create(const int& id, std::string n, int e);
+	static Card* create(const int& id);
+	static Card* create_random();
 };
 #endif

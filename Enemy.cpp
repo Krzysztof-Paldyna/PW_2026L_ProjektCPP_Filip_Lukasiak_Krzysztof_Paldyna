@@ -97,6 +97,10 @@ bool Character::Return_isDead()
 {
 	return isDead;
 }
+ElementType Character::Return_Element_Type()
+{
+	return CharacterType;
+}
 Character::~Character()
 {
 
@@ -113,6 +117,7 @@ PlayerCharacter::PlayerCharacter()
 	file_path = "None";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
+	isEnemy = false;
 	update_texture();
 }
 PlayerCharacter::PlayerCharacter(std::string n, int hp)
@@ -127,6 +132,7 @@ PlayerCharacter::PlayerCharacter(std::string n, int hp)
 	file_path = "resources/textures/PlayerCharacter.png";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
+	isEnemy = false;
 	update_texture();
 	std::cout << "[DEBUG] Koniec konstruktora PlayerCharacter: " << name << std::endl;
 }
@@ -146,7 +152,9 @@ PlayerCharacter& PlayerCharacter::operator=(const PlayerCharacter& other)
 	max_hp = other.MaxHP;
 	current_hp = other.CurrentHp;
 	Charater_Description = other.Charater_Description;
+	isEnemy = false;
 	update_texture();
+	
 	return *this;
 }
 void PlayerCharacter::Set_Character_Description(std::string desc)
@@ -162,27 +170,14 @@ PlayerCharacter::~PlayerCharacter()
 
 }
 //--------------------------------------------------------------EnemyBaseline-----------------------------------------------
-Enemy::Enemy()
-{
-	Name = "NienazwanyPrzeciwnik";
-	MaxHP = 10;
-	CurrentHp = MaxHP;
-	CharacterType = None;
-	//zmienne klasy graphics_object_character:
-	name = Name;
-	file_path = "None";
-	max_hp = MaxHP;
-	current_hp = CurrentHp;
-	update_texture();
-}
 Enemy* Enemy::clone()
 {
 	return new Enemy(*this);
 }
-Enemy::Enemy(std::string n, int hp)
+Enemy::Enemy()
 {
-	Name = n;
-	MaxHP = hp;
+	Name = "NieznanyPrzeciwnik";
+	MaxHP = 100;
 	CurrentHp = MaxHP;
 	CharacterType = None;
 	//zmienne klasy graphics_object_character:
@@ -190,34 +185,44 @@ Enemy::Enemy(std::string n, int hp)
 	file_path = "None";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
+	Set_Intetion_Sprite(0, 6);
 	update_texture();
 }
 void Enemy::EnemyBehaviour(Battle* battle)
 {
 	std::cout << "Buuuuu cos robie strasznego :3" << std::endl;
 }
+int Enemy::Return_Intention()
+{
+	return Intention;
+}
+void Enemy::Set_Intetion_Sprite(int I, int v)
+{
+	if (I == 0)
+	{
+    	Intetion_Image.setTexture(Attack_Texture);
+		Intetion_Value_Text.setString(std::to_string(v));
+	}
+	else if (I == 1)
+	{
+    	Intetion_Image.setTexture(Shield_Texture);
+		Intetion_Value_Text.setString("");
+	}
+	else
+	{
+		std::cout<<"Zle podany argument I "<<std::endl;
+	}
+}
 Enemy::~Enemy()
 {
 
 }
 //--------------------------------------------------------------BasicEnemy-----------------------------------------------
+
 BasicEnemy::BasicEnemy()
 {
-	Name = "NienazwanyBasicEnemy";
-	MaxHP = 10;
-	CurrentHp = MaxHP;
-	CharacterType = None;
-	//zmienne klasy graphics_object_character:
-	name = Name;
-	file_path = "None";
-	max_hp = MaxHP;
-	current_hp = CurrentHp;
-	update_texture();
-}
-BasicEnemy::BasicEnemy(std::string n, int hp)
-{
-	Name = n;
-	MaxHP = hp;
+	Name = "Parobek";
+	MaxHP = 18;
 	CurrentHp = MaxHP;
 	CharacterType = None;
 	//zmienne klasy graphics_object_character:
@@ -225,16 +230,27 @@ BasicEnemy::BasicEnemy(std::string n, int hp)
 	file_path = "resources/textures/BasicEnemy.png";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
+	Set_Intetion_Sprite(0, 6);
 	update_texture();
 }
 void BasicEnemy::EnemyBehaviour(Battle* battle)
 {
-	std::cout << "Buuuuu cos robie strasznego :3, ale jest Basic" << std::endl;
-	battle->Return_Player()->Return_Character().TakeDamage(2);
+	if(Intention == 0)
+	{
+		battle->Return_Player()->Return_Character().TakeDamage(6);
+		Intention = 1;
+		Set_Intetion_Sprite(1, 0);
+	}
+	else if(Intention == 1)
+	{
+		Add_Shield(5);
+		Intention = 0;
+		Set_Intetion_Sprite(0, 6);
+	}
 }
-Enemy* BasicEnemy::kreator(std::string n, int hp)
+Enemy* BasicEnemy::kreator()
 {
-	return new BasicEnemy(n, hp);
+	return new BasicEnemy();
 }
 Enemy* BasicEnemy::clone()
 {
@@ -244,18 +260,69 @@ BasicEnemy::~BasicEnemy()
 {
 
 }
+//--------------------------------------------------------------JezEnemy-----------------------------------------------
+
+Jez::Jez()
+{
+	Name = "Jez";
+	MaxHP = 40;
+	CurrentHp = MaxHP;
+	CharacterType = Plant;
+	Shield = 10;
+	//zmienne klasy graphics_object_character:
+	name = Name;
+	file_path = "resources/textures/JezSprite.png";
+	max_hp = MaxHP;
+	current_hp = CurrentHp;
+	Set_Intetion_Sprite(1, 0);
+	update_texture();
+}
+void Jez::EnemyBehaviour(Battle* battle)
+{
+	
+	if(Intention == 0)
+	{
+		Add_Shield(10);
+		Intention = 1;
+		Set_Intetion_Sprite(0, 2);
+	}
+	else if(Intention == 1)
+	{
+		battle->Return_Player()->Return_Character().TakeDamage(2);
+		Intention = 0;
+		Set_Intetion_Sprite(1, 0);
+	}
+}
+Enemy* Jez::kreator()
+{
+	return new Jez();
+}
+Enemy* Jez::clone()
+{
+	return new Jez(*this);
+}
+Jez::~Jez()
+{
+
+}
 //--------------------------------------------------------------EnemyFactory-----------------------------------------------
 void EnemyFactory::regist(const int& id, EnemyCreator k)
 {
 	Registered_Enemies[id] = k;
 }
-Enemy* EnemyFactory::create(const int& id, std::string n, int hp)
+Enemy* EnemyFactory::create(const int& id)
 {
-	return Registered_Enemies[id](n, hp);
+	return Registered_Enemies[id]();
 }
 void EnemyFactory::Initialize()
 {
 	if (!Registered_Enemies.empty()) return;
 
 	EnemyFactory::regist(1, &BasicEnemy::kreator);
+	EnemyFactory::regist(2, &Jez::kreator);
+}
+Enemy* EnemyFactory::create_random()
+{
+	int g = 1 + rand() % Registered_Enemies.size(); 
+	return Registered_Enemies[g]()->clone();
 }

@@ -1,6 +1,8 @@
 #include"graphics_object_character.hpp"
 
 graphics_object_character::graphics_object_character(std::string name, std::string file_path, uint dim_x, uint dim_y, uint x, uint y) : graphics_object(name, file_path, dim_x, dim_y, x, y){//konstruktor domyślno-parametryczny
+    Attack_Texture.loadFromFile("resources/textures/AttackIntentionSprite.png", sf::IntRect({0,0}, {int(75), int(75)}));
+    Shield_Texture.loadFromFile("resources/textures/ShieldIntetionSprite.png", sf::IntRect({0,0}, {int(75), int(75)}));
     character_border.setSize({float(dim_x) + 5, float(dim_y) + 5});
     character_border.setFillColor(sf::Color(0, 0, 0, 0));
     character_border.setOutlineColor(sf::Color(0, 0, 0));
@@ -58,6 +60,17 @@ void graphics_object_character::draw(sf::RenderWindow &window, sf::Font &font){/
     if(file_path != "None"){
         character_image.setPosition(x, y);
         window.draw(character_image);
+    }
+    //rysuje intecje przeciwnikow
+    if(isEnemy == true)
+    {
+        Intetion_Image.setPosition(x + 95, y - 120);
+        Intetion_Value_Text.setFont(font);
+        Intetion_Value_Text.setCharacterSize(20);
+        Intetion_Value_Text.setFillColor(sf::Color::Red);
+        Intetion_Value_Text.setPosition(x + 145, y - 60);
+        window.draw(Intetion_Image);
+        window.draw(Intetion_Value_Text);
     }
 
     //rysowanie nazwy postaci:
