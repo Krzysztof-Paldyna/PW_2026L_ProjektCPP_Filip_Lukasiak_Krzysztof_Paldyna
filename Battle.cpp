@@ -273,14 +273,15 @@ void Battle::Select_Enemy(int mx, int my)
 }
 
 void Battle::Undertaker(){
-	if(Battle_Enemies.size() > 1){
+	if(Battle_Enemies.size() > 0){
 			for(int i = 0; i < Battle_Enemies.size(); ++i){
-				if(Battle_Enemies.at(i)->Return_isDead()){
-					Battle_Enemies.erase(Battle_Enemies.begin() + i);
-					--i;
-				}
+			if(Battle_Enemies.at(i)->Return_isDead()){
+				Battle_Enemies.erase(Battle_Enemies.begin() + i);
+				--i;
 			}
 		}
+	}
+	EndBattleCheck();
 }
 
 void Battle::EndBattleCheck()
@@ -291,14 +292,11 @@ void Battle::EndBattleCheck()
 		PlayerLost = true;
 	}
 	bool End = true;
-	for(int i = 0; i < Battle_Enemies.size(); i++)
+	if(Battle_Enemies.size() == 0)
 	{
-		if(Battle_Enemies.at(i)->Return_isDead() == false)
-		{
-			End = false;
-		}
+		End = false;
 	}
-	if(End == true)
+	if(End)
 	{
 		player->Reset_Energy();
 		player->Return_Discarded_Cards_to_Deck();
