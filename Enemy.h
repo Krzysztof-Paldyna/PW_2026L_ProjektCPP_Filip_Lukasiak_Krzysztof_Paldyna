@@ -11,16 +11,16 @@
 
 class Battle;
 
-enum ElementType
+enum class Element_Type
 {
 	None= 0,
 	Fire,
 	Water,
-	Wind,
+	Air,
 	Ground, 
 	Plant,
 	Electric,
-	Ice
+	Metal
 };
 
 class Character : public graphics_object_character
@@ -31,7 +31,8 @@ protected:
 	int CurrentHp;
 	int Shield = 0;
 	bool isDead = false;
-	ElementType CharacterType;
+	Element_Type CharacterType;
+	std::vector<std::pair<Status_Effect, int>> status_effects;
 	std::vector<graphics_object_dmg_val> damage_icons;
 public:
 	Character();
@@ -46,11 +47,15 @@ public:
 	void Add_Shield(int s);
 	int Return_Shield();
 	bool Return_isDead();
+	std::vector<std::pair<Status_Effect, int>> &Return_Status_Effects();
 	std::vector<graphics_object_dmg_val> &Return_Damage_Val();
-	ElementType Return_Element_Type();
+	Element_Type Return_Element_Type();
 
+	void Add_Status(Status_Effect effect, int val);
+	void Clear_Effects();
+	void Update_End_of_Turn_Effects();
 	void TakeDamage(int dmg);
-
+	void Update_Damage_Icons(int dmg, bool is_HP_damage);
 };
 class PlayerCharacter : public Character
 {

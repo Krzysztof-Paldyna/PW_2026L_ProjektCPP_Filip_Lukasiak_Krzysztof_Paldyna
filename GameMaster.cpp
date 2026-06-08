@@ -185,8 +185,11 @@ void GameMaster::Start_New_Battle()
         delete current_battle;
     }
     std::vector<Enemy*> Act_Enemies;
-    Act_Enemies.push_back(EnemyFactory::create_random());
-
+    int enemy_count = 1 + rand() % 3;
+    for(int i; i < enemy_count; ++i){
+        Act_Enemies.push_back(EnemyFactory::create_random());
+    }
+    Playing_Player.Return_Character().Clear_Effects();
     current_battle = new Battle(&Playing_Player, Act_Enemies, Game_Window, &end, &e_counter, &d_info);
     
     State_of_Game = GameState::Battle;
@@ -201,6 +204,7 @@ void GameMaster::Update_Battle_Frame(int mx, int my, bool isClicked) {
     // Obsługa kliknięć
     if(isClicked){
         current_battle->Handle_Mouse_Click(mx, my);
+        current_battle->Undertaker();
     }
 
     current_battle->EnemyAction();

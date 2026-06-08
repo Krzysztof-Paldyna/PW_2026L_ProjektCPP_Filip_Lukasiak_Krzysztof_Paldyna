@@ -6,12 +6,13 @@ Card::Card()
 {
 	Nazwa = "NienazwanaKarta";
 	Energy = 1;
-	Card_class = Attack_Card;
-	CardType = None;
+	Cardclass = Card_Class::Attack_Card;
+	CardType = Element_Type::None;
 	//elementy graficzne:
 	name = Nazwa;
 	cost = std::to_string(Energy);
 	file_path = "None";
+	Set_Color_By_Type();
 	update_texture();
 }
 Card* Card::clone()
@@ -51,19 +52,49 @@ Card::~Card()
 
 }
 
+void Card::Set_Color_By_Type()
+{	
+	switch(CardType){
+	case Element_Type::Fire:
+		set_color(255, 64, 20);
+		break;
+	case Element_Type::Water:
+		set_color(0, 160, 255);
+		break;
+	case Element_Type::Air:
+		set_color(230, 255, 255);
+		break;
+	case Element_Type::Ground:
+		set_color(140, 64, 12);
+		break;
+	case Element_Type::Plant:
+		set_color(0, 200, 0);
+		break;
+	case Element_Type::Electric:
+		set_color(255, 255, 64);
+		break;
+	case Element_Type::Metal:
+		set_color(200, 200, 200);
+	default:
+		set_color(128, 128, 128);
+		break;
+	}
+}
+
 //--------------------------------------------------------------AttackCard-----------------------------------------------
 AttackCard::AttackCard()
 {
 	Nazwa = "Basic Attack";
 	Energy = 1;
 	Attack = 6;
-	Card_class = Attack_Card;
-	CardType = None;
+	Cardclass = Card_Class::Attack_Card;
+	CardType = Element_Type::None;
 	//elementy graficzne:
 	name = Nazwa;
 	cost = std::to_string(Energy);
 	text = "Ta Karta Atakuje za 6 dmg";
 	file_path = "resources/textures/AttackCardSprite.png";
+	Set_Color_By_Type();
 	update_texture();
 }
 Card* AttackCard::clone() 
@@ -73,7 +104,13 @@ Card* AttackCard::clone()
 void AttackCard::Card_Effect(Battle* b)
 {
 	b->Return_Player()->Reduce_Energy(Energy);
-	b->Return_Selected_Enemy()->TakeDamage(Attack);
+	//zadawanie obrażeń:
+	int damage_modifier = 0;
+	for(auto &v : b->Return_Player()->Return_Character().Return_Status_Effects())
+		if(v.first == Status_Effect::Strenght){
+			damage_modifier += v.second;
+		}
+	b->Return_Selected_Enemy()->TakeDamage(Attack + damage_modifier);
 	std::cout << "Efect Karty Ataku!!! Zadaje " << Attack << " Obrazen " <<b->Return_Selected_Enemy()->Return_Name() << std::endl;
 	std::cout<< "Ma aktualnie "<< b->Return_Selected_Enemy()->Return_CurrentHP()<<std::endl;
 	b->EndBattleCheck();
@@ -94,13 +131,14 @@ ShieldCard::ShieldCard()
 	Nazwa = "Basic Shield";
 	Energy = 1;
 	Shield = 5;
-	Card_class = Skill_Card;
-	CardType = None;
+	Cardclass = Card_Class::Skill_Card;
+	CardType = Element_Type::None;
 	//elementy graficzne:
 	name = Nazwa;
 	cost = std::to_string(Energy);
 	text = "Ta Karta daje 5 Tarczy";
 	file_path = "resources/textures/ShieldCardSprite.png";
+	Set_Color_By_Type();
 	update_texture();
 }
 Card* ShieldCard::clone() 
@@ -130,12 +168,14 @@ AttackShieldCard::AttackShieldCard()
 	Energy = 1;
 	Attack = 4;
 	Shield = 2;
-	Card_class = Attack_Card;
+	Cardclass = Card_Class::Attack_Card;
+	CardType = Element_Type::None;
 	//elementy graficzne:
 	name = Nazwa;
 	cost = std::to_string(Energy);
 	text = "Ta Karta Atakuje za 4 dmg\ni daje 2 tarczy";
 	file_path = "resources/textures/AttackShieldCardSprite.png";
+	Set_Color_By_Type();
 	update_texture();
 }
 Card* AttackShieldCard::clone()
@@ -145,7 +185,13 @@ Card* AttackShieldCard::clone()
 void AttackShieldCard::Card_Effect(Battle* b)
 {
 	b->Return_Player()->Reduce_Energy(Energy);
-	b->Return_Selected_Enemy()->TakeDamage(Attack);
+	//zadawanie obrażeń:
+	int damage_modifier = 0;
+	for(auto &v : b->Return_Player()->Return_Character().Return_Status_Effects())
+		if(v.first == Status_Effect::Strenght){
+			damage_modifier += v.second;
+		}
+	b->Return_Selected_Enemy()->TakeDamage(Attack + damage_modifier);
 	b->Return_Player()->Return_Character().Add_Shield(Shield);
 	std::cout << "Efect Karty Ataku!!! Zadaje " << Attack << " Obrazen " <<b->Return_Selected_Enemy()->Return_Name() << std::endl;
 	std::cout<< "Ma aktualnie "<< b->Return_Selected_Enemy()->Return_CurrentHP()<<std::endl;
@@ -164,13 +210,14 @@ DrawCard::DrawCard()
 {
 	Nazwa = "Draw";
 	Energy = 1;
-	Card_class = Skill_Card;
-	CardType = None;
+	Cardclass = Card_Class::Skill_Card;
+	CardType = Element_Type::None;
 	//elementy graficzne:
 	name = Nazwa;
 	cost = std::to_string(Energy);
 	text = "Dobierz dwie karty";
 	file_path = "resources/textures/DrawCardSprite.png";
+	Set_Color_By_Type();
 	update_texture();
 }
 Card* DrawCard::clone() 
@@ -200,13 +247,14 @@ FireAttack::FireAttack()
 	Nazwa = "Fire Attack";
 	Energy = 1;
 	Attack = 4;
-	Card_class = Attack_Card;
-	CardType = Fire;
+	Cardclass = Card_Class::Attack_Card;
+	CardType = Element_Type::Fire;
 	//elementy graficzne:
 	name = Nazwa;
 	cost = std::to_string(Energy);
-	text = "Atakujesz ogniem 3 razy\npo 4 dmg i jesli masz tez\ntyp ogniowy atakujesz\n3 razy";
+	text = "Atakujesz ogniem 2 razy\npo 4 dmg. Jezeli jestes\ntypu ogniowego atakujesz\ndodatkowy raz";
 	file_path = "resources/textures/FireAttackSprite.png";
+	Set_Color_By_Type();
 	update_texture();
 }
 Card* FireAttack::clone() 
@@ -216,13 +264,23 @@ Card* FireAttack::clone()
 void FireAttack::Card_Effect(Battle* b)
 {
 	b->Return_Player()->Reduce_Energy(Energy);
-	b->Return_Selected_Enemy()->TakeDamage(Attack);
-	b->Return_Selected_Enemy()->TakeDamage(Attack);
+	//zadawanie obrażeń:
+	int damage_modifier = 0;
+	for(auto &v : b->Return_Player()->Return_Character().Return_Status_Effects())
+		if(v.first == Status_Effect::Strenght){
+			damage_modifier += v.second;
+		}
+	int attack_times = 2;
 	if(CardType == b->Return_Player()->Return_Character().Return_Element_Type())
 	{
-		b->Return_Selected_Enemy()->TakeDamage(Attack);
+		++attack_times;
+	}
+	for(int i = 0; i < attack_times; ++i)
+	{
+		b->Return_Selected_Enemy()->TakeDamage(Attack + damage_modifier);
 	}
 	b->EndBattleCheck();
+
 }
 Card* FireAttack:: kreator()
 {
@@ -238,13 +296,14 @@ Splash::Splash()
 	Nazwa = "Splash";
 	Energy = 0;
 	Attack = 2;
-	Card_class = Attack_Card;
-	CardType = Water;
+	Cardclass = Card_Class::Attack_Card;
+	CardType = Element_Type::Water;
 	//elementy graficzne:
 	name = Nazwa;
 	cost = std::to_string(Energy);
 	text = "Lekko ochlapujesz wroga\nza 2 dmg, ale jesli\n jestes typu wodnego\ndobierasz tez karte";
 	file_path = "resources/textures/SplashCardSprite.png";
+	Set_Color_By_Type();
 	update_texture();
 }
 Card* Splash::clone() 
@@ -254,7 +313,13 @@ Card* Splash::clone()
 void Splash::Card_Effect(Battle* b)
 {
 	b->Return_Player()->Reduce_Energy(Energy);
-	b->Return_Selected_Enemy()->TakeDamage(Attack);
+	//zadawanie obrażeń:
+	int damage_modifier = 0;
+	for(auto &v : b->Return_Player()->Return_Character().Return_Status_Effects())
+		if(v.first == Status_Effect::Strenght){
+			damage_modifier += v.second;
+		}
+	b->Return_Selected_Enemy()->TakeDamage(Attack + damage_modifier);
 	if(CardType == b->Return_Player()->Return_Character().Return_Element_Type())
 	{
 		b->Return_Player()->Draw_Card();
@@ -274,14 +339,15 @@ ThunderBolt::ThunderBolt()
 {
 	Nazwa = "Thunder Bolt";
 	Energy = 2;
-	Attack = 13;
-	Card_class = Attack_Card;
-	CardType = Electric;
+	Attack = 15;
+	Cardclass = Card_Class::Attack_Card;
+	CardType = Element_Type::Electric;
 	//elementy graficzne:
 	name = Nazwa;
 	cost = std::to_string(Energy);
-	text = "Walisz MEGA PIORUNEM\nza 13 dmg";
+	text = "Walisz MEGA PIORUNEM\nza 15 dmg";
 	file_path = "resources/textures/ThunderBoltSprite.png";
+	Set_Color_By_Type();
 	update_texture();
 }
 Card* ThunderBolt::clone() 
@@ -291,7 +357,13 @@ Card* ThunderBolt::clone()
 void ThunderBolt::Card_Effect(Battle* b)
 {
 	b->Return_Player()->Reduce_Energy(Energy);
-	b->Return_Selected_Enemy()->TakeDamage(Attack);
+	//zadawanie obrażeń:
+	int damage_modifier = 0;
+	for(auto &v : b->Return_Player()->Return_Character().Return_Status_Effects())
+		if(v.first == Status_Effect::Strenght){
+			damage_modifier += v.second;
+		}
+	b->Return_Selected_Enemy()->TakeDamage(Attack + damage_modifier);
 	b->EndBattleCheck();
 }
 Card* ThunderBolt::kreator()
@@ -302,6 +374,137 @@ ThunderBolt::~ThunderBolt()
 {
 
 }
+
+//--------------------------------------------------------------Flamethrower-----------------------------------------------
+Flamethrower::Flamethrower()
+{
+	Nazwa = "Flamethrower";
+	Energy = 1;
+	Attack = 7;
+	Cardclass = Card_Class::Attack_Card;
+	CardType = Element_Type::Fire;
+	//elementy graficzne:
+	name = Nazwa;
+	cost = std::to_string(Energy);
+	text = "Miotasz OGNIEM\nza 7 dmg i\n nakladasz efekt\nBURN 3 na przeciwnika";
+	file_path = "resources/textures/attack_flamethrower.png";
+	Set_Color_By_Type();
+	update_texture();
+}
+Card* Flamethrower::clone() 
+{
+	return new Flamethrower(*this);
+}
+void Flamethrower::Card_Effect(Battle* b)
+{
+	b->Return_Player()->Reduce_Energy(Energy);
+
+	//zadawanie obrażeń:
+	int damage_modifier = 0;
+	for(auto &v : b->Return_Player()->Return_Character().Return_Status_Effects())
+		if(v.first == Status_Effect::Strenght){
+			damage_modifier += v.second;
+		}
+	b->Return_Selected_Enemy()->TakeDamage(Attack + damage_modifier);
+
+	//nakładanie efektu:
+	b->Return_Selected_Enemy()->Add_Status(Status_Effect::Burn, 3);
+
+	b->EndBattleCheck();
+}
+Card* Flamethrower::kreator()
+{
+	return new Flamethrower();
+}
+Flamethrower::~Flamethrower()
+{
+
+}
+
+
+//--------------------------------------------------------------Earthquake-----------------------------------------------
+Earthquake::Earthquake()
+{
+	Nazwa = "Earthquake";
+	Energy = 3;
+	Attack = 16;
+	Cardclass = Card_Class::Attack_Card;
+	CardType = Element_Type::Ground;
+	//elementy graficzne:
+	name = Nazwa;
+	cost = std::to_string(Energy);
+	text = "Wstrzasasz ziemia i\nzadajesz 18 obrazen\nWSZYSTKIM przeciwnikom";
+	file_path = "resources/textures/aaa.jpg";
+	Set_Color_By_Type();
+	update_texture();
+}
+Card* Earthquake::clone() 
+{
+	return new Earthquake(*this);
+}
+void Earthquake::Card_Effect(Battle* b)
+{
+	b->Return_Player()->Reduce_Energy(Energy);
+
+	//zadawanie obrażeń:
+	int damage_modifier = 0;
+	for(auto &v : b->Return_Player()->Return_Character().Return_Status_Effects())
+		if(v.first == Status_Effect::Strenght){
+			damage_modifier += v.second;
+		}
+	for(auto &v : b->Return_Enemies()){
+		v->TakeDamage(Attack + damage_modifier);
+	}
+
+	b->EndBattleCheck();
+}
+Card* Earthquake::kreator()
+{
+	return new Earthquake();
+}
+Earthquake::~Earthquake()
+{
+
+}
+
+
+//--------------------------------------------------------------Second_Wind-----------------------------------------------
+Second_Wind::Second_Wind()
+{
+	Nazwa = "Second Wind";
+	Energy = 1;
+	Shield = 5;
+	Cardclass = Card_Class::Attack_Card;
+	CardType = Element_Type::Air;
+	//elementy graficzne:
+	name = Nazwa;
+	cost = std::to_string(Energy);
+	text = "Bierzesz gleboki oddech.\nZyskujesz 5 tarczy\ni 1 SILY";
+	file_path = "resources/textures/Excusemesir.png";
+	Set_Color_By_Type();
+	update_texture();
+}
+Card* Second_Wind::clone() 
+{
+	return new Second_Wind(*this);
+}
+void Second_Wind::Card_Effect(Battle* b)
+{
+	b->Return_Player()->Reduce_Energy(Energy);
+	b->Return_Player()->Return_Character().Add_Shield(Shield);
+
+	//nakładanie efektu:
+	b->Return_Player()->Return_Character().Add_Status(Status_Effect::Strenght, 1);
+}
+Card* Second_Wind::kreator()
+{
+	return new Second_Wind();
+}
+Second_Wind::~Second_Wind()
+{
+
+}
+
 //--------------------------------------------------------------CardFactory-----------------------------------------------
 void CardFactory::regist(const int& id, CardCreator k)
 {
@@ -321,6 +524,9 @@ void CardFactory::Initialize()
 	regist(5, &FireAttack::kreator);
 	regist(6, &Splash::kreator);
 	regist(7, &ThunderBolt::kreator);
+	regist(8, &Flamethrower::kreator);
+	regist(9, &Earthquake::kreator);
+	regist(10, &Second_Wind::kreator);
 }
 Card* CardFactory::create_random()
 {

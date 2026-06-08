@@ -5,6 +5,7 @@
 #include<iostream>
 #include<chrono>
 #include<cmath>
+#include<tuple>
 #include<SFML/System.hpp>
 #include<SFML/Window.hpp>
 #include<SFML/Graphics.hpp>
@@ -53,7 +54,7 @@ public:
     graphics_object& operator=(const graphics_object& other) {name = other.name; file_path = other.file_path; x = other.x; y=other.y; is_highlighted = other.is_highlighted; return *this;}
 
     //metody klasy:
-    void set_position(uint x, uint y) {this->x = x; this->y = y;}
+    void set_position(uint x, uint y) {this->x = x; this->y = y;}   //zmienia wartość zmiennych x i y obiektu
     virtual void draw(sf::RenderWindow &window, sf::Font &font) = 0; //przeciążana funkcja rysująca obiekt w podanych koordynatach na oknie SMFL
 };
 

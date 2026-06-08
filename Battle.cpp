@@ -30,8 +30,10 @@ void Battle::EnemyAction()
 		//akcje przeciwników
 		for(auto &v : Battle_Enemies)
 		{
+			v->Update_End_of_Turn_Effects();
 			v->Add_Shield(-1 * v->Return_Shield());
 		}
+		Undertaker();
 		for(auto &v : Battle_Enemies)
 		{
 			v->EnemyBehaviour(this);
@@ -43,6 +45,7 @@ void Battle::EnemyAction()
 		currentState = BattleState::Player_turn;
 		end_turn_button->set_is_Player_Turn(true);
 		player->Return_Character().Add_Shield(-1 * player->Return_Character().Return_Shield());
+		player->Return_Character().Update_End_of_Turn_Effects();
 	}
 }
 void Battle::Render_Cards()
@@ -72,21 +75,22 @@ void Battle::Render_Player()
 			if(!player->Return_Character().Return_Damage_Val().at(i).get_state()){
 				player->Return_Character().Return_Damage_Val().erase(player->Return_Character().Return_Damage_Val().begin() + i);
 				//std::cout << "player damage icon deleted" << std::endl;
-				i = 0;
+				--i;
 			}
 		}
 	}
 }
 void Battle::Render_Enemies()
 {
-	for(int i = 0; i < Battle_Enemies.size(); ++i)
+	float Enemy_Count = Battle_Enemies.size();
+	for(int i = 0; i < Enemy_Count; ++i)
 	{
 		//update wartości graficznych
 		Battle_Enemies.at(i)->set_hp(Battle_Enemies.at(i)->Return_CurrentHP());
 		Battle_Enemies.at(i)->set_shield(Battle_Enemies.at(i)->Return_Shield());
 		//rysowanie wrogów w odpowiednich pozycjach
-        Battle_Enemies.at(i)->set_position(int(battle_window->getSize().x / 2 * (1 + 1/((Battle_Enemies.size() + 1) * (i + 1))) + Battle_Enemies.at(i)->get_dim_x()), int(battle_window->getSize().y / 4));
-        Battle_Enemies.at(i)->draw(*battle_window, card_font);
+        Battle_Enemies.at(i)->set_position(int(battle_window->getSize().x * (0.35 + 0.7*(i + 1)/(Enemy_Count + 1)) - Battle_Enemies.at(i)->get_dim_x()/1.25), int(battle_window->getSize().y / 4));
+		Battle_Enemies.at(i)->draw(*battle_window, card_font);
 
 		if(Battle_Enemies.at(i)->Return_Damage_Val().size() > 0){
 			for(auto &v : Battle_Enemies.at(i)->Return_Damage_Val()){
@@ -96,7 +100,7 @@ void Battle::Render_Enemies()
 				if(!Battle_Enemies.at(i)->Return_Damage_Val().at(j).get_state()){
 					Battle_Enemies.at(i)->Return_Damage_Val().erase(Battle_Enemies.at(i)->Return_Damage_Val().begin() + j);
 					//std::cout << "enemy damage icon deleted" << std::endl;
-					j = 0;
+					--j;
 				}
 			}
 		}
@@ -268,6 +272,17 @@ void Battle::Select_Enemy(int mx, int my)
     }
 }
 
+void Battle::Undertaker(){
+	if(Battle_Enemies.size() > 1){
+			for(int i = 0; i < Battle_Enemies.size(); ++i){
+				if(Battle_Enemies.at(i)->Return_isDead()){
+					Battle_Enemies.erase(Battle_Enemies.begin() + i);
+					--i;
+				}
+			}
+		}
+}
+
 void Battle::EndBattleCheck()
 {
 	if(player->Return_Character().Return_isDead() == true)
@@ -307,6 +322,7 @@ void Battle::CanPlayCardCheck()
 	if (player->Return_Current_Energy() >= player->Return_PlayerHand().at(g)->Return_Card_Cost())
 	{
 		player->PlayCard(g)->Card_Effect(this);
+		
 	}
 	else
 	{

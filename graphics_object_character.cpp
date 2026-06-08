@@ -2,7 +2,7 @@
 
 graphics_object_character::graphics_object_character(std::string name, std::string file_path, uint dim_x, uint dim_y, uint x, uint y) : graphics_object(name, file_path, dim_x, dim_y, x, y){//konstruktor domyślno-parametryczny
     Attack_Texture.loadFromFile("resources/textures/AttackIntentionSprite.png", sf::IntRect({0,0}, {int(75), int(75)}));
-    Shield_Texture.loadFromFile("resources/textures/ShieldIntetionSprite.png", sf::IntRect({0,0}, {int(75), int(75)}));
+    Shield_Texture.loadFromFile("resources/textures/ShieldIntetionSprite.png", sf::IntRect({0,0}, {int(75), int(75)}));    
     character_border.setSize({float(dim_x) + 5, float(dim_y) + 5});
     character_border.setFillColor(sf::Color(0, 0, 0, 0));
     character_border.setOutlineColor(sf::Color(0, 0, 0));
@@ -32,18 +32,49 @@ void graphics_object_character::set_shield(int new_shield){
     current_shield = new_shield;
 }
 
+void graphics_object_character::add_effect(Status_Effect effect, int val){
+    sf::Texture texture;
+    std::string description = "None";
+    if(effect == Status_Effect::Strenght){
+        texture.loadFromFile("resources/textures/status_effect_strenght.png");
+        description = "Ataki zadaja\n+" + std::to_string(val) + "obrazen";
+    }
+    else if(effect == Status_Effect::Burn){
+        texture.loadFromFile("resources/textures/status_effect_burn.png");
+        description = "Zadaje " + std::to_string(val) + " obrazen\npod koniec tury";
+    }
+    else if(effect == Status_Effect::Poison){
+        texture.loadFromFile("resources/textures/status_effect_poison.png");
+        description = "Zadaje " + std::to_string(val) + " obrazen\npod koniec tury";
+    }
+    status_effect_icons.push_back(std::make_tuple(texture, val, description));
+}
+
+void graphics_object_character::remove_effect(uint id){
+    if(status_effect_icons.size() < id){
+        status_effect_icons.erase(status_effect_icons.begin() + id);
+    }
+    else{
+        std::cout << "ERROR, specified status effect id out of vector bound" <<std::endl;
+    }
+}
+
 void graphics_object_character::draw(sf::RenderWindow &window, sf::Font &font){//przeciążana funkcja rysująca kartę w podanym oknie SMFL, z użyciem podanej czcionki
     
     switch(is_highlighted){
         case highlight::positive:{
-            character_border.setOutlineColor(sf::Color(255, 0, 0, 128));
+            character_border.setOutlineColor(sf::Color(0, 255, 0, 255));
             character_border.setOutlineThickness(4);
             break;
         }
         case highlight::negative:{
-            character_border.setOutlineColor(sf::Color(255, 0, 0, 128));
+            character_border.setOutlineColor(sf::Color(255, 0, 0, 255));
             character_border.setOutlineThickness(4);
             break;
+        }
+        case highlight::mouse_over:{
+            character_border.setOutlineColor(sf::Color(255, 200, 0, 200));
+            character_border.setOutlineThickness(4);
         }
         default:{
             character_border.setOutlineColor(sf::Color(0, 0, 0));
@@ -124,6 +155,49 @@ void graphics_object_character::draw(sf::RenderWindow &window, sf::Font &font){/
         shield_val.setFillColor(sf::Color::Black);
         shield_val.setPosition(shield_icon.getPosition().x + 2*s - shield_val.getLocalBounds().width/1.6, shield_icon.getPosition().y);
         window.draw(shield_val);
+    }
+
+    //rysowanie ikonek efektów:
+    for(int i = 0; i < status_effect_icons.size(); ++i){
+        //rysowanie ikonki:
+        sf::Sprite effect_icon (std::get<0>(status_effect_icons.at(i)));
+        int pos_x = x + 25*i;
+        int pos_y = y + dim_y + 20;
+        effect_icon.setPosition(pos_x, pos_y);
+        window.draw(effect_icon);
+
+        //rysowanie wartości na ikonce:
+        int effect_value = std::get<1>(status_effect_icons.at(i));
+        sf::Text effect_icon_val;
+        effect_icon_val.setFont(font);
+        effect_icon_val.setString(std::to_string(effect_value));
+        effect_icon_val.setPosition(pos_x + 7, pos_y + 5);
+        effect_icon_val.setFillColor(sf::Color::Black);
+        effect_icon_val.setCharacterSize(20);
+        window.draw(effect_icon_val);
+        
+
+        //rysowanie opisu po najechaniu na efekt myszką:
+        sf::Event event;
+        window.pollEvent(event);
+        int mx = event.mouseButton.x;
+        int my = event.mouseButton.y;
+        if(pos_x <= mx && mx <= pos_x + 25 && pos_y <= my && my <= pos_y + 25){
+            sf::RectangleShape textbox;
+            textbox.setSize({300, 100});
+            textbox.setPosition(pos_x, pos_y + 30);
+            textbox.setFillColor(sf::Color(255, 255, 255, 128));
+            textbox.setOutlineColor(sf::Color(0, 0, 0, 128));
+            textbox.setOutlineThickness(2);
+            window.draw(textbox);
+            sf::Text effect_description;
+            effect_description.setFont(font);
+            effect_description.setString(std::get<2>(status_effect_icons.at(i)));
+            effect_description.setPosition(pos_x, pos_y + 30);
+            effect_description.setFillColor(sf::Color::Black);
+            effect_description.setCharacterSize(20);
+            window.draw(effect_description);
+        }
     }
 }
 

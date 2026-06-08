@@ -7,7 +7,7 @@ Character::Character()
 	Name = "Missingno";
 	MaxHP = 10;
 	CurrentHp = MaxHP;
-	CharacterType = None;
+	CharacterType = Element_Type::None;
 	//zmienne klasy graphics_object_character:
 	name = Name;
 	file_path = "None";
@@ -19,7 +19,7 @@ Character::Character(std::string n, int hp)
 	Name = n;
 	MaxHP = hp;
 	CurrentHp = MaxHP;
-	CharacterType = None;
+	CharacterType = Element_Type::None;
 	//zmienne klasy graphics_object_character:
 	name = Name;
 	file_path = "None";
@@ -55,36 +55,72 @@ void Character::Add_Shield(int s)
 	Shield += s;
 }
 
+std::vector<std::pair<Status_Effect, int>> &Character::Return_Status_Effects(){
+	return status_effects;
+}
+
 std::vector<graphics_object_dmg_val> &Character::Return_Damage_Val(){
 	return damage_icons;
 }
+
+void Character::Add_Status(Status_Effect effect, int val){
+	for(int i = 0; i < status_effects.size(); ++i){
+		if(status_effects.at(i).first == effect){
+			status_effects.at(i).second += val;
+			status_effect_icons.at(i) = std::make_tuple(std::get<0>(status_effect_icons.at(i)), status_effects.at(i).second, std::get<2>(status_effect_icons.at(i)));
+			return;
+		}
+	}
+	add_effect(effect, val);
+	status_effects.push_back(std::make_pair(effect, val));
+}
+
+void Character::Clear_Effects(){
+	status_effects.clear();
+	status_effect_icons.clear();
+}
+
+void Character::Update_End_of_Turn_Effects(){
+	for(int i = 0; i < status_effects.size(); ++i){
+		if(status_effects.at(i).first == Status_Effect::Burn){
+			TakeDamage(status_effects.at(i).second);
+			--status_effects.at(i).second;
+			status_effect_icons.at(i) = std::make_tuple(std::get<0>(status_effect_icons.at(i)), status_effects.at(i).second, std::get<2>(status_effect_icons.at(i)));
+		}
+		else if(status_effects.at(i).first == Status_Effect::Poison){
+			TakeDamage(status_effects.at(i).second);
+			--status_effects.at(i).second;
+			status_effect_icons.at(i) = std::make_tuple(std::get<0>(status_effect_icons.at(i)), status_effects.at(i).second, std::get<2>(status_effect_icons.at(i)));
+		}
+		//usuwanie wyzerowanych efektów:
+		if(status_effects.at(i).second <= 0){
+			status_effects.erase(status_effects.begin() + i);
+			status_effect_icons.erase(status_effect_icons.begin() + i);
+		}
+	}
+}
+
 void Character::TakeDamage(int dmg)
 {
-	std::random_device RNG;
-	std::mt19937 generator(RNG());
-	std::uniform_int_distribution<int> x_distribution(-80, 80);
-	std::uniform_int_distribution<int> y_distribution(-10, 100);
-	int pos_x = x + dim_x/2 + x_distribution(generator) - 10*std::to_string(dmg).length();
-	int pos_y = y + dim_y/4 - y_distribution(generator);
-	graphics_object_dmg_val dmg_icon(std::to_string(dmg), "None", 0, 0, pos_x, pos_y);
-	damage_icons.push_back(dmg_icon);
-	//std::cout << "size of icons vector: " << damage_icons.size() << std::endl;
-
 	if (Shield > 0)
 	{
 		if (dmg > Shield)
 		{
 			CurrentHp -= dmg - Shield;
+			Update_Damage_Icons(Shield, false);
+			Update_Damage_Icons(dmg - Shield, true);
 			Shield = 0;
 		}
 		else
 		{
 			Shield -= dmg;
+			Update_Damage_Icons(dmg, false);
 		}
 	}
 	else
 	{
 		CurrentHp -= dmg;
+		Update_Damage_Icons(dmg, true);
 	}
 	set_hp(CurrentHp);	//update wartości wyświetlanej
 	if (CurrentHp <= 0)
@@ -93,11 +129,25 @@ void Character::TakeDamage(int dmg)
 		isDead = true;
 	}
 }
+
+void Character::Update_Damage_Icons(int dmg, bool is_HP_damage){
+	std::random_device RNG;
+	std::mt19937 generator(RNG());
+	std::uniform_int_distribution<int> x_distribution(-80, 80);
+	std::uniform_int_distribution<int> y_distribution(-10, 100);
+	int pos_x = x + dim_x/2 + x_distribution(generator) - 10*std::to_string(dmg).length();
+	int pos_y = y + dim_y/4 - y_distribution(generator);
+	graphics_object_dmg_val dmg_icon(is_HP_damage, std::to_string(dmg), "None", 0, 0, pos_x, pos_y);
+	damage_icons.push_back(dmg_icon);
+	//std::cout << "size of icons vector: " << damage_icons.size() << std::endl;
+}
+
+
 bool Character::Return_isDead()
 {
 	return isDead;
 }
-ElementType Character::Return_Element_Type()
+Element_Type Character::Return_Element_Type()
 {
 	return CharacterType;
 }
@@ -111,7 +161,7 @@ PlayerCharacter::PlayerCharacter()
 	Name = "MissingnoGracz";
 	MaxHP = 10;
 	CurrentHp = MaxHP;
-	CharacterType = None;
+	CharacterType = Element_Type::None;
 	//zmienne klasy graphics_object_character:
 	name = Name;
 	file_path = "None";
@@ -126,7 +176,7 @@ PlayerCharacter::PlayerCharacter(std::string n, int hp)
 	Name = n;
 	MaxHP = hp;
 	CurrentHp = MaxHP;
-	CharacterType = None;
+	CharacterType = Element_Type::None;
 	//zmienne klasy graphics_object_character:
 	name = Name;
 	file_path = "resources/textures/PlayerCharacter.png";
@@ -179,7 +229,7 @@ Enemy::Enemy()
 	Name = "NieznanyPrzeciwnik";
 	MaxHP = 100;
 	CurrentHp = MaxHP;
-	CharacterType = None;
+	CharacterType = Element_Type::None;
 	//zmienne klasy graphics_object_character:
 	name = Name;
 	file_path = "None";
@@ -224,7 +274,7 @@ BasicEnemy::BasicEnemy()
 	Name = "Parobek";
 	MaxHP = 18;
 	CurrentHp = MaxHP;
-	CharacterType = None;
+	CharacterType = Element_Type::None;
 	//zmienne klasy graphics_object_character:
 	name = Name;
 	file_path = "resources/textures/BasicEnemy.png";
@@ -267,7 +317,7 @@ Jez::Jez()
 	Name = "Jez";
 	MaxHP = 40;
 	CurrentHp = MaxHP;
-	CharacterType = Plant;
+	CharacterType = Element_Type::Plant;
 	Shield = 10;
 	//zmienne klasy graphics_object_character:
 	name = Name;

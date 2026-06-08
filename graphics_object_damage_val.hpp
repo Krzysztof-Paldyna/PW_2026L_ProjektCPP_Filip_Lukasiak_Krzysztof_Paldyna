@@ -8,12 +8,13 @@
 */
 class graphics_object_dmg_val: public graphics_object{
 protected:
-    sf::Text text;  //przycisk końca tury
+    sf::Text text;  //wyświetlany tekst obrażeń
+    bool is_HP_damage;  //zmienia kolor ikonki
     std::chrono::time_point<std::chrono::system_clock> start;    //start życia ikonki
     std::chrono::milliseconds lifetime;    //czas życia ikonki w milisekundach, po którym jest usuwana
     bool is_alive;
 public:
-    graphics_object_dmg_val(std::string name = "0", std::string path = "None", uint dim_x = 0, uint dim_y = 0, uint x = 0, uint y = 0); //konstruktor parametryczny
+    graphics_object_dmg_val(bool HP_damage, std::string name = "0", std::string path = "None", uint dim_x = 0, uint dim_y = 0, uint x = 0, uint y = 0); //konstruktor parametryczny
     ~graphics_object_dmg_val();  //destruktor
 
     void set_damage_text(std::string new_text);

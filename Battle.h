@@ -62,8 +62,10 @@ public:
 	void CanPlayCardCheck(); //Konsola
 	void CanPlayCardCheck2(Card *c, Enemy *e, int i); //Okno
 
+	
 	void EndPlayerTurn();
 	void EnemyAction();
+	void Undertaker();	//usuwa martwych przeciwników z pola walki
 	void EndBattleCheck();
 
 	Enemy* &Return_Selected_Enemy();

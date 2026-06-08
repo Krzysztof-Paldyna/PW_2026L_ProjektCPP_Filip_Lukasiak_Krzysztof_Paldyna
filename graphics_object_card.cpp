@@ -36,6 +36,9 @@ graphics_object_card& graphics_object_card::operator=(const graphics_object_card
     return *this;
 }
 
+void graphics_object_card::set_color(uint r, uint g, uint b, uint alpha){
+    card_border.setFillColor(sf::Color(r, g, b, alpha));
+}
 
 void graphics_object_card::draw(sf::RenderWindow &window, sf::Font &font){//przeciążana funkcja rysująca kartę w podanym oknie SMFL, z użyciem podanej czcionki
     //jeśli obiekt jest highlightowany zmienia kolor i grubość ramki karty

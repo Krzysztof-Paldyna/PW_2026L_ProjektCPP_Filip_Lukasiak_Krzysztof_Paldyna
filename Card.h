@@ -13,7 +13,7 @@ class Player;
 class Enemy;
 class Battle;
 
-enum Card_Class
+enum class Card_Class
 {
 	Attack_Card = 1,
 	Skill_Card
@@ -25,8 +25,8 @@ protected:
 	std::string Opis;
 	std::string Path;
 	int Energy;
-	Card_Class Card_class;
-	ElementType CardType;
+	Card_Class Cardclass;
+	Element_Type CardType;
 
 public:
 	Card();
@@ -36,6 +36,7 @@ public:
 	int ChooseEnemy(const std::vector<Enemy>& en);
 	virtual void Card_Effect(Battle* b);
 	virtual ~Card();
+	void Set_Color_By_Type();
 };
 
 typedef Card* (*CardCreator) ();
@@ -134,6 +135,45 @@ public:
 	virtual ~ThunderBolt();
 	static Card* kreator();
 	static int const Id = 7;
+};
+
+class Flamethrower: public Card
+{
+protected:
+	int Attack = 1;
+public:
+	Flamethrower();
+	virtual Card* clone();
+	virtual void Card_Effect(Battle* b);
+	virtual ~Flamethrower();
+	static Card* kreator();
+	static int const Id = 8;
+};
+
+class Earthquake: public Card
+{
+protected:
+	int Attack = 1;
+public:
+	Earthquake();
+	virtual Card* clone();
+	virtual void Card_Effect(Battle* b);
+	virtual ~Earthquake();
+	static Card* kreator();
+	static int const Id = 9;
+};
+
+class Second_Wind: public Card
+{
+protected:
+	int Shield = 1;
+public:
+	Second_Wind();
+	virtual Card* clone();
+	virtual void Card_Effect(Battle* b);
+	virtual ~Second_Wind();
+	static Card* kreator();
+	static int const Id = 10;
 };
 
 class CardFactory

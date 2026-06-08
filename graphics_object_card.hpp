@@ -21,6 +21,7 @@ public:
 
     void set_cost(int card_cost);
     void set_text(std::string card_text);
+    void set_color(uint r, uint g, uint b, uint alpha = 255);
     void draw(sf::RenderWindow &window, sf::Font &font) override; //przeciążana funkcja rysująca kartę w podanym oknie SMFL, z użyciem podanej czcionki
 
     void update_texture();
