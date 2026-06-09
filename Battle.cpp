@@ -291,12 +291,7 @@ void Battle::EndBattleCheck()
 		isBattleOver = true;
 		PlayerLost = true;
 	}
-	bool End = true;
 	if(Battle_Enemies.size() == 0)
-	{
-		End = false;
-	}
-	if(End)
 	{
 		player->Reset_Energy();
 		player->Return_Discarded_Cards_to_Deck();
