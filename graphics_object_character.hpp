@@ -24,7 +24,9 @@ protected:
 
     bool isEnemy = true;
     sf::Texture Attack_Texture;
-    sf::Texture Shield_Texture;   
+    sf::Texture Shield_Texture;
+    sf::Texture Poison_Texture;
+    sf::Texture Buff_Texture;
     sf::Sprite Intetion_Image;
     sf::Text Intetion_Value_Text;
 

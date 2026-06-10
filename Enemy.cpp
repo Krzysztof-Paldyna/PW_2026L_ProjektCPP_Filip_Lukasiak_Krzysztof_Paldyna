@@ -170,13 +170,13 @@ PlayerCharacter::PlayerCharacter()
 	isEnemy = false;
 	update_texture();
 }
-PlayerCharacter::PlayerCharacter(std::string n, int hp)
+PlayerCharacter::PlayerCharacter(std::string n, int hp, Element_Type type)
 {
 	std::cout << "[DEBUG] Start konstruktora PlayerCharacter: " << name << std::endl;
 	Name = n;
 	MaxHP = hp;
 	CurrentHp = MaxHP;
-	CharacterType = Element_Type::None;
+	CharacterType = type;
 	//zmienne klasy graphics_object_character:
 	name = Name;
 	file_path = "resources/textures/PlayerCharacter.png";
@@ -251,12 +251,30 @@ void Enemy::Set_Intetion_Sprite(int I, int v)
 	if (I == 0)
 	{
     	Intetion_Image.setTexture(Attack_Texture);
+		Intetion_Image.setScale(sf::Vector2f(1.0f, 1.0f));
+		Intetion_Image.setTextureRect(sf::IntRect({0, 0}, {75, 75}));
 		Intetion_Value_Text.setString(std::to_string(v));
 	}
 	else if (I == 1)
 	{
     	Intetion_Image.setTexture(Shield_Texture);
-		Intetion_Value_Text.setString("");
+		Intetion_Image.setScale(sf::Vector2f(1.0f, 1.0f));
+		Intetion_Image.setTextureRect(sf::IntRect({0, 0}, {75, 75}));
+		Intetion_Value_Text.setString(std::to_string(v));
+	}
+	else if (I == 2)
+	{
+		Intetion_Image.setTexture(Poison_Texture);
+		Intetion_Image.setScale(sf::Vector2f(3.0f, 3.0f));
+		Intetion_Image.setTextureRect(sf::IntRect({0, 0}, {25, 25}));
+		Intetion_Value_Text.setString(std::to_string(v));
+	}
+	else if (I == 3)
+	{
+		Intetion_Image.setTexture(Buff_Texture);
+		Intetion_Image.setScale(sf::Vector2f(3.0f, 3.0f));
+		Intetion_Image.setTextureRect(sf::IntRect({0, 0}, {25, 25}));
+		Intetion_Value_Text.setString(std::to_string(v));
 	}
 	else
 	{
@@ -289,7 +307,7 @@ void BasicEnemy::EnemyBehaviour(Battle* battle)
 	{
 		battle->Return_Player()->Return_Character().TakeDamage(6);
 		Intention = 1;
-		Set_Intetion_Sprite(1, 0);
+		Set_Intetion_Sprite(1, 5);
 	}
 	else if(Intention == 1)
 	{
@@ -324,7 +342,7 @@ Jez::Jez()
 	file_path = "resources/textures/JezSprite.png";
 	max_hp = MaxHP;
 	current_hp = CurrentHp;
-	Set_Intetion_Sprite(1, 0);
+	Set_Intetion_Sprite(1, 10);
 	update_texture();
 }
 void Jez::EnemyBehaviour(Battle* battle)
@@ -334,13 +352,13 @@ void Jez::EnemyBehaviour(Battle* battle)
 	{
 		Add_Shield(10);
 		Intention = 1;
-		Set_Intetion_Sprite(0, 2);
+		Set_Intetion_Sprite(2, 2);
 	}
 	else if(Intention == 1)
 	{
-		battle->Return_Player()->Return_Character().TakeDamage(2);
+		battle->Return_Player()->Return_Character().Add_Status(Status_Effect::Poison, 2);
 		Intention = 0;
-		Set_Intetion_Sprite(1, 0);
+		Set_Intetion_Sprite(1, 10);
 	}
 }
 Enemy* Jez::kreator()
@@ -352,6 +370,64 @@ Enemy* Jez::clone()
 	return new Jez(*this);
 }
 Jez::~Jez()
+{
+
+}
+
+//--------------------------------------------------------------Oddzial_Kalmar-----------------------------------------------
+
+SqlWard::SqlWard()
+{
+	Name = "GIGA Kalmar";
+	MaxHP = 80;
+	CurrentHp = MaxHP;
+	CharacterType = Element_Type::Water;
+	Shield = 15;
+	//zmienne klasy graphics_object_character:
+	name = Name;
+	file_path = "resources/textures/Squidward.png";
+	max_hp = MaxHP;
+	current_hp = CurrentHp;
+	Set_Intetion_Sprite(3, 2);
+	update_texture();
+}
+void SqlWard::EnemyBehaviour(Battle* battle)
+{
+	int dmg = 7;
+	for(auto &v : status_effects){
+		if(Status_Effect::Strenght == v.first){
+			dmg += v.second;
+		}
+	}
+	if(Intention == 0)
+	{
+		Add_Status(Status_Effect::Strenght, 2);
+		Intention = 1;
+		Set_Intetion_Sprite(0, dmg + 2);
+	}
+	else if(Intention == 1)
+	{
+
+		battle->Return_Player()->Return_Character().TakeDamage(dmg);
+		Intention = 2;
+		Set_Intetion_Sprite(1, 15);
+	}
+	else if(Intention == 2)
+	{
+		Add_Shield(15);
+		Intention = 0;
+		Set_Intetion_Sprite(3, 2);
+	}
+}
+Enemy* SqlWard::kreator()
+{
+	return new SqlWard();
+}
+Enemy* SqlWard::clone()
+{
+	return new SqlWard(*this);
+}
+SqlWard::~SqlWard()
 {
 
 }
@@ -370,9 +446,11 @@ void EnemyFactory::Initialize()
 
 	EnemyFactory::regist(1, &BasicEnemy::kreator);
 	EnemyFactory::regist(2, &Jez::kreator);
+	EnemyFactory::regist(3, &SqlWard::kreator);
 }
 Enemy* EnemyFactory::create_random()
 {
-	int g = 1 + rand() % Registered_Enemies.size(); 
+	//int g = 1 + rand() % Registered_Enemies.size(); nr 3 jest bossem
+	int g = 1 + rand() % 2;
 	return Registered_Enemies[g]()->clone();
 }

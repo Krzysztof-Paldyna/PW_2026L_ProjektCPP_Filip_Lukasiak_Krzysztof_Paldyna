@@ -2,7 +2,9 @@
 
 graphics_object_character::graphics_object_character(std::string name, std::string file_path, uint dim_x, uint dim_y, uint x, uint y) : graphics_object(name, file_path, dim_x, dim_y, x, y){//konstruktor domyślno-parametryczny
     Attack_Texture.loadFromFile("resources/textures/AttackIntentionSprite.png", sf::IntRect({0,0}, {int(75), int(75)}));
-    Shield_Texture.loadFromFile("resources/textures/ShieldIntetionSprite.png", sf::IntRect({0,0}, {int(75), int(75)}));    
+    Shield_Texture.loadFromFile("resources/textures/ShieldIntetionSprite.png", sf::IntRect({0,0}, {int(75), int(75)}));   
+    Poison_Texture.loadFromFile("resources/textures/status_effect_poison.png", sf::IntRect({0,0}, {int(25), int(25)}));
+    Buff_Texture.loadFromFile("resources/textures/status_effect_strenght.png", sf::IntRect({0,0}, {int(25), int(25)}));
     character_border.setSize({float(dim_x) + 5, float(dim_y) + 5});
     character_border.setFillColor(sf::Color(0, 0, 0, 0));
     character_border.setOutlineColor(sf::Color(0, 0, 0));

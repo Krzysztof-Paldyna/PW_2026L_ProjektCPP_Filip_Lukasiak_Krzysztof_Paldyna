@@ -30,7 +30,7 @@ protected:
     graphics_object_menu_button Skip_Button;
     graphics_object_menu_button Choose_Button;
 
-    PlayerCharacter Character_1, Character_2;
+    PlayerCharacter Character_1, Character_2, Character_3;
     sf::RenderWindow *Game_Window = nullptr;
     sf::Font menu_font;
     Player Playing_Player;

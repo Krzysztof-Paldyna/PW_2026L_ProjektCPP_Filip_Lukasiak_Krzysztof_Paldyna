@@ -8,8 +8,10 @@
 #include "Enemy.h"
 #include "Battle.h"
 
+
 int main(){
     srand(time(NULL));
+
     CardFactory::Initialize();
     EnemyFactory::Initialize();
     

@@ -1,6 +1,6 @@
 #include "GameMaster.h"
 
-GameMaster::GameMaster(sf::RenderWindow *w): Start_Button("Start"), Quit_Button("Quit"), Skip_Button("Pomin"), Choose_Button("Wybierz"), Continue_Button("Dalej"), Character_1("Pimpek", 77), Character_2("Bombel", 70)
+GameMaster::GameMaster(sf::RenderWindow *w): Start_Button("Start"), Quit_Button("Quit"), Skip_Button("Pomin"), Choose_Button("Wybierz"), Continue_Button("Dalej"), Character_1("Pimpek", 77), Character_2("Bombel", 70), Character_3("Floppa", 80, Element_Type::Fire)
 {
     std::cout << "[DEBUG] Start konstruktora GameMaster" << std::endl;
     if (!menu_font.loadFromFile("resources/fonts/Andale_Mono.ttf"))
@@ -18,7 +18,9 @@ GameMaster::GameMaster(sf::RenderWindow *w): Start_Button("Start"), Quit_Button(
     Choose_Button.set_button_position(1500, 200);
     Character_1.Set_Character_Description("Najbardziej normalna wanilla \nnijaka szara codzienna postac.");
     Character_2.Set_Character_Description("Druga postac na razie \ndla pokazu.");
-    Character_2.Set_Character_File_Path("resources/textures/BasicEnemy.png");
+    Character_2.Set_Character_File_Path("resources/textures/sad_meow.png");
+    Character_3.Set_Character_Description("Trzecia postac.\nDzierzy moc ognia.");
+    Character_3.Set_Character_File_Path("resources/textures/Big_Floppa.png");
     std::cout << "[DEBUG] Koniec konstruktora GameMaster" << std::endl;
 
     Game_Over_Texture.loadFromFile("resources/textures/GameOver.png", sf::IntRect({0,0}, {int(500), int(380)}));  
@@ -133,13 +135,16 @@ void GameMaster::BattleVictory(int mx, int my, bool isClicked)
 }
 void GameMaster::Choose_Character(int mx, int my, bool isClicked)
 {
-    graphics_object_choose_character Character_1_Sprite(Character_1), Character_2_Sprite(Character_2);
+    graphics_object_choose_character Character_1_Sprite(Character_1), Character_2_Sprite(Character_2), Character_3_Sprite(Character_3);
     Character_2_Sprite.set_character_sprite_position(600, 0);
     Character_2.set_position(600, 0);
+    Character_3_Sprite.set_character_sprite_position(1200, 0);
+    Character_3.set_position(1200, 0);
     if (Game_Window != nullptr)
     {
         Character_1_Sprite.draw(*Game_Window, menu_font);
         Character_2_Sprite.draw(*Game_Window, menu_font);
+        Character_3_Sprite.draw(*Game_Window, menu_font);
     }
     if (isClicked)
     {
@@ -158,8 +163,8 @@ void GameMaster::Choose_Character(int mx, int my, bool isClicked)
             Playing_Player.Add_Card(CardFactory::create(4)->clone());
             Start_New_Battle();
         }
-         if (mx >= Character_2.get_x() && mx <= Character_2.get_x() + Character_2.get_dim_x() &&
-                my >= Character_2.get_y() && my <= Character_2.get_y() + Character_2.get_dim_y())
+        if (mx >= Character_2.get_x() && mx <= Character_2.get_x() + Character_2.get_dim_x() &&
+            my >= Character_2.get_y() && my <= Character_2.get_y() + Character_2.get_dim_y())
         {
             Playing_Player.Set_Character(Character_2);
             Playing_Player.Add_Card(CardFactory::create(1)->clone());
@@ -174,6 +179,21 @@ void GameMaster::Choose_Character(int mx, int my, bool isClicked)
             Playing_Player.Add_Card(CardFactory::create(3)->clone());
             Start_New_Battle();
         }
+        if (mx >= Character_3.get_x() && mx <= Character_3.get_x() + Character_3.get_dim_x() &&
+            my >= Character_3.get_y() && my <= Character_3.get_y() + Character_3.get_dim_y())
+        {
+            Playing_Player.Set_Character(Character_3);
+            Playing_Player.Add_Card(CardFactory::create(1)->clone());
+            Playing_Player.Add_Card(CardFactory::create(1)->clone());
+            Playing_Player.Add_Card(CardFactory::create(2)->clone());
+            Playing_Player.Add_Card(CardFactory::create(2)->clone());
+            Playing_Player.Add_Card(CardFactory::create(5)->clone());
+            Playing_Player.Add_Card(CardFactory::create(5)->clone());
+            Playing_Player.Add_Card(CardFactory::create(8)->clone());
+            Playing_Player.Add_Card(CardFactory::create(8)->clone());
+            Playing_Player.Add_Card(CardFactory::create(10)->clone());
+            Start_New_Battle();
+        }
     }
 }
 
@@ -185,9 +205,15 @@ void GameMaster::Start_New_Battle()
         delete current_battle;
     }
     std::vector<Enemy*> Act_Enemies;
-    int enemy_count = 1 + rand() % 3;
+    int enemy_count = 1 + rand() % 2;
     for(int i; i < enemy_count; ++i){
         Act_Enemies.push_back(EnemyFactory::create_random());
+    }
+    if(0 == (rand() % 2)){  //co druga bitwa ma dodatkowego wroga
+        Act_Enemies.push_back(EnemyFactory::create_random());
+    }
+    else if(0 == (rand() & 3)){ //szansa na bossa
+        Act_Enemies.push_back(EnemyFactory::create(3));
     }
     Playing_Player.Return_Character().Clear_Effects();
     current_battle = new Battle(&Playing_Player, Act_Enemies, Game_Window, &end, &e_counter, &d_info);

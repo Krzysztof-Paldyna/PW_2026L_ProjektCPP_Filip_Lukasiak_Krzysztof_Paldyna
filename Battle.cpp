@@ -44,8 +44,8 @@ void Battle::EnemyAction()
 		//akcje na początku tury gracza:
 		currentState = BattleState::Player_turn;
 		end_turn_button->set_is_Player_Turn(true);
-		player->Return_Character().Add_Shield(-1 * player->Return_Character().Return_Shield());
 		player->Return_Character().Update_End_of_Turn_Effects();
+		player->Return_Character().Add_Shield(-1 * player->Return_Character().Return_Shield());
 	}
 }
 void Battle::Render_Cards()
@@ -274,7 +274,7 @@ void Battle::Select_Enemy(int mx, int my)
 
 void Battle::Undertaker(){
 	if(Battle_Enemies.size() > 0){
-			for(int i = 0; i < Battle_Enemies.size(); ++i){
+		for(int i = 0; i < Battle_Enemies.size(); ++i){
 			if(Battle_Enemies.at(i)->Return_isDead()){
 				Battle_Enemies.erase(Battle_Enemies.begin() + i);
 				--i;
@@ -302,6 +302,7 @@ void Battle::EndBattleCheck()
 		EnemyLost = true;
 	}
 }
+
 std::vector<Enemy*>& Battle::Return_Enemies()
 {
 	return Battle_Enemies;

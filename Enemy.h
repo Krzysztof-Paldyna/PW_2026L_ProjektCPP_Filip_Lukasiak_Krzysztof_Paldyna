@@ -63,7 +63,7 @@ private:
 	std::string Charater_Description;
 public:
 	PlayerCharacter();
-	PlayerCharacter(std::string n, int hp);
+	PlayerCharacter(std::string n, int hp, Element_Type type = Element_Type::None);
 	void Set_Character_Description(std::string desc);
 	void Set_Character_File_Path(std::string p);
 	std::string Return_Player_Character_Description();
@@ -104,6 +104,16 @@ public:
 	static Enemy* kreator();
 	virtual Enemy* clone();
 	virtual ~Jez();
+	virtual void EnemyBehaviour(Battle* battle);
+};
+
+class SqlWard: public Enemy
+{
+public:
+	SqlWard();
+	static Enemy* kreator();
+	virtual Enemy* clone();
+	virtual ~SqlWard();
 	virtual void EnemyBehaviour(Battle* battle);
 };
 
